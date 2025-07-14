@@ -17,7 +17,7 @@ public class BaseManager {
 			if(fileExists){
 				System.out.println("Database nicht gefunden. Datei wurde neu angelegt");
 			} else {
-				System.out.println("Die Datei gab es bereits ");
+				System.out.println("Die Datei gab es bereits.");
 			}
 		} catch (IOException e){
 			System.out.println("Es gab ein Problem bei der Dateierstellung");
@@ -58,7 +58,7 @@ public class BaseManager {
 		if (file.delete()){
 			System.out.println("Die Datei wurde gelöscht");
 		} else {
-			System.out.println("Der Datei wurde Überlebt");
+			System.out.println("Der Datei Überlebt");
 		}
 	}
 

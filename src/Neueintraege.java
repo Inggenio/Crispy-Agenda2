@@ -16,7 +16,7 @@ public class Neueintraege {
 
 	//Buttons
 	//Anrede
-	String[] eintrageTyp = {"Bitte wählen","Kunde","Lieferant"};
+	String[] eintrageTyp = {"Bitte wählen","Kunde","Lieferant","Nicht Angegeben"};
 	JComboBox typ = new JComboBox<>(eintrageTyp);
 	JLabel typLabel = new JLabel("Kontakt Typ");
 
