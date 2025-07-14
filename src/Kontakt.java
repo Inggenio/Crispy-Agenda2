@@ -1,7 +1,9 @@
 public class Kontakt {
 
+	private KontaktTyp typ;
 	private String vorname;
 	private String nachname;
+	private String unternehmen;
 	private String eMail;
 	private String telefon;
 	private boolean favorit;
@@ -9,12 +11,31 @@ public class Kontakt {
 	public Kontakt() {
 	}
 
-	public Kontakt(String vorname, String nachname, String eMail, String telefon, boolean favorit) {
+	public Kontakt(KontaktTyp typ, String vorname, String nachname, String unternehmen, String eMail, String telefon, boolean favorit) {
+		this.typ = typ;
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.unternehmen = unternehmen;
+		this.eMail = eMail;
+		this.telefon = telefon;
+		this.favorit = favorit;
+	}
+
+	public Kontakt(KontaktTyp typ, String vorname, String nachname, String eMail, String telefon, boolean favorit) {
+		this.typ = typ;
 		this.vorname = vorname;
 		this.nachname = nachname;
 		this.eMail = eMail;
 		this.telefon = telefon;
 		this.favorit = favorit;
+	}
+
+	public KontaktTyp getTyp() {
+		return typ;
+	}
+
+	public void setTyp(KontaktTyp typ) {
+		this.typ = typ;
 	}
 
 	public String getVorname() {
@@ -31,6 +52,14 @@ public class Kontakt {
 
 	public void setNachname(String nachname) {
 		this.nachname = nachname;
+	}
+
+	public String getUnternehmen() {
+		return unternehmen;
+	}
+
+	public void setUnternehmen(String unternehmen) {
+		this.unternehmen = unternehmen;
 	}
 
 	public String geteMail() {
@@ -57,8 +86,27 @@ public class Kontakt {
 		this.favorit = favorit;
 	}
 
+	public String typString(KontaktTyp typ){
+		if(typ == KontaktTyp.LIEFERANT){
+			return "Lieferant";
+		} else if (typ == KontaktTyp.KUNDE) {
+			return "Kunde";
+		}
+		return "Nicht Angegeben";
+	}
+	public String kontaktToCsv(Kontakt kontakt){
+		return typString(this.typ)+ "," +
+				getVorname()+ "," +
+				getNachname()+ "," +
+				getUnternehmen()+ "," +
+				geteMail()+ "," +
+				getTelefon()+ "," +
+				isFavorit();
+
+	}
+
 	@Override
 	public String toString() {
-		return nachname + " " + vorname + " // " + eMail + " // " + telefon + "Favorit" + (isFavorit()? "[*]" : "[ ]");
+		return typString(this.typ) + nachname + " " + vorname + " // " + eMail + " // " + telefon + "Favorit" + (isFavorit()? "[*]" : "[ ]");
 	}
 }

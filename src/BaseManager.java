@@ -5,22 +5,36 @@ import java.util.Scanner;
 
 public class BaseManager {
 	private static List<Kontakt> kontakte = new ArrayList<>();
-	private static final String database = "Database/Agenda.csv";
-	static File dataBase = new File(database);
+	private static final String dataBasePfad = "Database/Agenda.csv";
+	static File dataBase = new File(dataBasePfad);
 
 	public static void checkDatabase(){
-		// filename = Absoluter oder Relativer Pfad
-		File file = new File(database);
+		File file = new File(dataBasePfad);
 
-		try{
-			boolean fileExists = file.createNewFile();
-			if(fileExists){
-				System.out.println("Database nicht gefunden. Datei wurde neu angelegt");
-			} else {
-				System.out.println("Die Datei gab es bereits.");
+		if (!file.exists()) {
+			try {
+				boolean created = file.createNewFile();
+				if (created) {
+					System.out.println("Database nicht gefunden. Datei wurde neu angelegt.");
+					dataBaseStruktur();
+					MusterKontakte.generateKontakts();
+				} else {
+					System.out.println("Die Datei konnte nicht erstellt werden.");
+				}
+			} catch (IOException e) {
+				System.out.println("Es gab ein Problem bei der Dateierstellung.");
+				e.printStackTrace();
 			}
-		} catch (IOException e){
-			System.out.println("Es gab ein Problem bei der Dateierstellung");
+		} else {
+			System.out.println("Datei existiert bereits.");
+		}
+	}
+	public static void dataBaseStruktur(){
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataBasePfad))) {
+			writer.write("typ,vorname,nachname,unternehmen,email,telefon,favorit");
+			writer.newLine();
+		} catch (IOException e) {
+			System.out.println("Fehler beim Schreiben der Datenstruktur.");
 			e.printStackTrace();
 		}
 	}
@@ -28,9 +42,9 @@ public class BaseManager {
 	public static void writeFile(String filename, String content){
 
 		try {
-			FileWriter fileWriter = new FileWriter(filename, true); //cuando Append es Falso, reemplaza todo
+			FileWriter fileWriter = new FileWriter(filename, true);
+			fileWriter.write(System.lineSeparator());
 			fileWriter.write(content);
-			//fileWriter.write(System.lineSeparator());
 			fileWriter.close();
 
 		} catch (IOException e) {
@@ -67,19 +81,31 @@ public class BaseManager {
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] daten = line.split(",");
-				if (daten.length == 5) {
-					String vorname = daten[0];
-					String nachname = daten[1];
-					String email = daten[3];
-					String telefon = daten[2];
-					boolean favorit = Boolean.parseBoolean(daten[4]);
-					kontakte.add(new Kontakt(vorname, nachname, email, telefon, favorit));
+				if (daten.length == 6) {
+					String typ = daten[0];
+					String vorname = daten[1];
+					String nachname = daten[2];
+					String unternehmen = daten[3];
+					String email = daten[4];
+					String telefon = daten[5];
+					boolean favorit = Boolean.parseBoolean(daten[6]);
+					KontaktTyp kontaktTyp = typErkennung(typ);
+					kontakte.add(new Kontakt(kontaktTyp,vorname, nachname, unternehmen, email, telefon, favorit ));
+
 					System.out.println(kontakte.toString());
 				}
 			}
 		} catch (IOException e) {
 			System.out.println("Database nicht gefunden.");
 		}
+	}
+	private static KontaktTyp typErkennung(String typ){
+		if (typ.equalsIgnoreCase("LIEFERANT")){
+			return KontaktTyp.LIEFERANT;
+		} else if (typ.equalsIgnoreCase("KUNDE")) {
+			return KontaktTyp.KUNDE;
+		}
+		return KontaktTyp.NICHT_ANGEGEBEN;
 	}
 	public void kontaktSpeichern() {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(dataBase))) {

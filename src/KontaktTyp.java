@@ -1,5 +1,5 @@
 public enum KontaktTyp {
 	LIEFERANT,
 	KUNDE,
-	NICHT_ANGEGEBEN;
+	NICHT_ANGEGEBEN
 }
