@@ -1,0 +1,6 @@
+typ,vorname,nachname,unternehmen,email,telefon,favorit
+KUNDE,Este,mecansa,NiIdea,nidea@gmail.com,17547544,false
+KUNDE,Max,Musterman,,max.musterman@musteremail.com,123456789,true
+KUNDE,Ana,Gómez,,ana.gomez@email.com,987654321,false
+LIEFERANT,Luis,Perez,PerezCompanc,luis.perez@email.com,555123456,true
+KUNDE,Este,mecansa,NiIdea,nidea@gmail.com,17547544,false

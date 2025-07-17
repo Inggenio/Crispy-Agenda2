@@ -1,18 +1,38 @@
 public class Main {
 	public static void main(String[] args) {
 
-		//Neue Eintraege Sub-Programm
-//
-//		Neueintraege neu = new Neueintraege();
-//		neu.go();
-
-		//BaseManager.checkDatabase();
-		//Main.run();
-		//BaseManager.kontakteAufladen();
-		Kontakt uno = new Kontakt(KontaktTyp.KUNDE,"Charles","Pezold", "Planeta", "beispiel@gmail.com","17547544",true);
-		BaseManager.writeFile("Database/Agenda.csv", uno.kontaktToCsv(uno));
+		//Kontakt dos = new Kontakt(KontaktTyp.KUNDE,"Este","mecansa", "NiIdea", "nidea@gmail.com","17547544",false);
+		run();
+		//close();
 	}
 	public static void run(){
-		System.out.println("Main GUI");
+		System.out.println("Checking Database...");
+		BaseManager.checkDatabase();
+		System.out.println("Database wird aufgeladen werden...");
+		BaseManager.AgendaAufLaden();
+		System.out.println("Print Database von ArrayList");
+		for(Kontakt kontakt: BaseManager.kontakte){
+			System.out.println(kontakt);
+		}
+		System.out.println("Borrar contacto");
+		BaseManager.kontaktLoschenNachname("FAMILIO");
+		String contacto = "KontaktTyp.KUNDE,tercero,familio, ,nidea@gmail.com,17547544,false";
+
+		BaseManager.kontaktLoschenNachname("FAMILIO");
+		for(Kontakt kontakt: BaseManager.kontakte){
+			System.out.println(kontakt);
+		}
+
+		System.out.println("Reimpresion");
+		for(Kontakt kontakt: BaseManager.kontakte){
+			System.out.println(kontakt);
+		}
+
+
+
+
+	}
+	public static void close(){
+		BaseManager.AgendaAbladen();
 	}
 }

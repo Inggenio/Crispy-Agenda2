@@ -3,6 +3,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class MusterKontakte {
+
+	/* Format der Klasse Kontakt
+	 KontaktTyp typ;
+	 String vorname;
+	 String nachname;
+	 String unternehmen;
+	 String eMail;
+	 String telefon;
+	 boolean favorit;
+	 */
+
 	public static void main(String[] args) {
 		generateKontakts();
 	}
@@ -10,8 +21,8 @@ public class MusterKontakte {
 		String pfad = "Database/Agenda.csv";
 		String[] musterKontakte = {
 				"Kunde,Max,Musterman,,123456789,max.musterman@musteremail.com,true",
-				"Kunde,Ana,Gómez,,987654321,ana.gomez@email.com,false",
-				"Lieferant,Luis,Perez,PerezCompanc,555123456,luis.perez@email.com,true",
+				"Kunde,Ana,Gómez,,ana.gomez@email.com,987654321,false",
+				"Lieferant,Luis,Perez,PerezCompanc,luis.perez@email.com,555123456,true",
 		};
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(pfad, true ))) {
 			for (String kontakte : musterKontakte) {
