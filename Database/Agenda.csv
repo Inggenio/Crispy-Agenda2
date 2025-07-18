@@ -1,6 +1,13 @@
 typ,vorname,nachname,unternehmen,email,telefon,favorit
-KUNDE,Este,mecansa,NiIdea,nidea@gmail.com,17547544,false
 KUNDE,Max,Musterman,,max.musterman@musteremail.com,123456789,true
 KUNDE,Ana,Gómez,,ana.gomez@email.com,987654321,false
 LIEFERANT,Luis,Perez,PerezCompanc,luis.perez@email.com,555123456,true
 KUNDE,Este,mecansa,NiIdea,nidea@gmail.com,17547544,false
+UNBEKANNT,Lopez,Estanislao,MapucheInc,mapu@web.de,495136,false
+KUNDE,Carlos,Sambueza,aca,cs@aca.ar,495266,true
+KUNDE,Este,mecansa,NiIdea,nidea@gmail.com,17547544,false
+KUNDE,Max,Musterman,,max.musterman@musteremail.com,123456789,true
+KUNDE,Este,mecansa,NiIdea,nidea@gmail.com,17547544,false
+KUNDE,Tomy,Reynolds,,treynolds@hotmail.com,123456779,false
+KUNDE,Enrique,Perez,DeutschHelicopter,pereze@deutschhelikopter.de,082154789552,false
+LIEFERANT,Ryan,Reynolds,MarvelCo,rr@marvel.com,045678954,false

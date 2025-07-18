@@ -6,8 +6,8 @@ public class MusterKontakte {
 
 	/* Format der Klasse Kontakt
 	 KontaktTyp typ;
-	 String vorname;
 	 String nachname;
+	 String vorname;
 	 String unternehmen;
 	 String eMail;
 	 String telefon;

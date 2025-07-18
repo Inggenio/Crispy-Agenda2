@@ -1,8 +1,8 @@
 public class Kontakt {
 
 	private KontaktTyp typ;
-	private String vorname;
 	private String nachname;
+	private String vorname;
 	private String unternehmen;
 	private String eMail;
 	private String telefon;
@@ -11,7 +11,7 @@ public class Kontakt {
 	public Kontakt() {
 	}
 
-	public Kontakt(KontaktTyp typ, String vorname, String nachname, String unternehmen, String eMail, String telefon, boolean favorit) {
+	public Kontakt(KontaktTyp typ, String nachname,String vorname, String unternehmen, String eMail, String telefon, boolean favorit) {
 		this.typ = typ;
 		this.vorname = vorname;
 		this.nachname = nachname;
@@ -84,6 +84,15 @@ public class Kontakt {
 
 	public void setFavorit(boolean favorit) {
 		this.favorit = favorit;
+	}
+
+	public static KontaktTyp typStringToTyp(String typ){
+		if(typ.equalsIgnoreCase("LIEFERANT")){
+			return KontaktTyp.LIEFERANT;
+		} else if (typ.equalsIgnoreCase("KUNDE")) {
+			return KontaktTyp.KUNDE;
+		}
+		return KontaktTyp.UNBEKANNT;
 	}
 
 	public String typString(KontaktTyp typ){

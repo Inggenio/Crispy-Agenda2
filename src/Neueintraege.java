@@ -7,6 +7,12 @@ import java.util.regex.Pattern;
 
 public class Neueintraege {
 
+	private KontaktTableModel tableModel; // Referenz an Originall Intanz der Tabelle
+
+	public Neueintraege(KontaktTableModel model) {
+		this.tableModel = model;
+	}
+
 	JFrame window = new JFrame("Neue Eintrage");
 	JPanel panel = new JPanel();
 	GridBagLayout layout = new GridBagLayout();
@@ -17,8 +23,8 @@ public class Neueintraege {
 	//Buttons
 	//Anrede
 	String[] eintrageTyp = {"Bitte wählen","Kunde","Lieferant","Nicht Angegeben"};
-	JComboBox typ = new JComboBox<>(eintrageTyp);
-	JLabel typLabel = new JLabel("Kontakt Typ");
+	JComboBox typBox = new JComboBox<>(eintrageTyp);
+	JLabel lblTyp = new JLabel("Kontakt Typ");
 
 	//Name
 	JLabel lblName = new JLabel("Name");
@@ -33,14 +39,14 @@ public class Neueintraege {
 	JTextField textEmail = new JTextField(20);
 
 	//Adresse
-	JLabel lblAdresse = new JLabel("Adresse");
-	JTextField textAdresse = new JTextField(20);
+	JLabel lblUnternehmen = new JLabel("Unternehmen");
+	JTextField textUnternehmen = new JTextField(20);
 
 	//Telefonnummer
 	JLabel lblTelefon = new JLabel("Telefonnummer");
 	JTextField textTelefon = new JTextField(20);
 
-	JLabel lblGeneral = new JLabel("Favorit Kontakt?");
+	JLabel lblFavorit = new JLabel("Favorit Kontakt?");
 	JCheckBox checkBox = new JCheckBox();
 
 	public void go(){
@@ -53,8 +59,8 @@ public class Neueintraege {
 		gbc.ipadx = 10;
 		gbc.ipady = 10;
 
-		//Panel Deifnition
-		panel.setBackground(Color.LIGHT_GRAY);
+		//Panel Definition
+		panel.setBackground(Color.DARK_GRAY);
 		panel.setLayout(layout);
 
 		//Buttons und Felder
@@ -62,25 +68,38 @@ public class Neueintraege {
 		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVorname.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAdresse.setHorizontalAlignment(SwingConstants.RIGHT);
-		typLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUnternehmen.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblTyp.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTelefon.setHorizontalAlignment(SwingConstants.RIGHT);
 
+		lblName.setForeground(Color.ORANGE);
+		lblVorname.setForeground(Color.ORANGE);
+		lblEmail.setForeground(Color.ORANGE);
+		lblUnternehmen.setForeground(Color.ORANGE);
+		lblTyp.setForeground(Color.ORANGE);
+		lblTelefon.setForeground(Color.ORANGE);
+		lblFavorit.setForeground(Color.ORANGE);
+
+
+		checkBox.setOpaque(true);
+		checkBox.setBackground(Color.darkGray);
+		checkBox.setForeground(Color.darkGray);
+
 		//Kontakttyp
-		typ.setBackground(Color.GRAY);
-		typ.setSelectedIndex(0);
+		typBox.setBackground(Color.GRAY);
+		typBox.setSelectedIndex(0);
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.gridwidth = 1;
 		gbc.weightx = 0.1;
-		panel.add(typLabel,gbc);
+		panel.add(lblTyp,gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.1;
-		panel.add(typ,gbc);
+		panel.add(typBox,gbc);
 
 		//Name
 		gbc.gridx = 0;
@@ -108,18 +127,18 @@ public class Neueintraege {
 		gbc.weightx = 0.1;
 		panel.add(textVorname,gbc);
 
-		//Adresse
+		//Unternehmen
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.gridwidth = 1;
 		gbc.weightx = 0.1;
-		panel.add(lblAdresse,gbc);
+		panel.add(lblUnternehmen,gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.1;
-		panel.add(textAdresse,gbc);
+		panel.add(textUnternehmen,gbc);
 
 		//Email
 		gbc.gridx = 0;
@@ -156,7 +175,7 @@ public class Neueintraege {
 		//Favorit Kontakt?
 		gbc.gridx = 0;
 		gbc.gridy = 5;
-		panel.add(lblGeneral,gbc);
+		panel.add(lblFavorit,gbc);
 
 		//Checkbox
 		checkBox.setBackground(Color.LIGHT_GRAY);
@@ -174,9 +193,9 @@ public class Neueintraege {
 
 		// Window Definition
 		window.add(panel);
-		window.setSize(new Dimension(800,600));
+		window.setSize(new Dimension(700,500));
 		window.setVisible(true);
-		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		//Send Button Action
 		checker();
@@ -185,35 +204,50 @@ public class Neueintraege {
 		ActionListener sendFormular = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String typAuswahl = typBox.getSelectedItem().toString();
+				KontaktTyp typ = Kontakt.typStringToTyp(typAuswahl);
 				String name = textName.getText().trim();
 				String vorname = textVorname.getText().trim();
+				String unternehmen = textUnternehmen.getText().trim();
 				String email = textEmail.getText().trim();
 				String telefon = textTelefon.getText().trim();
+				Boolean favorit = checkBox.isSelected();
 
-
-				//E-Mail RegEx zum Checken
+				// E-Mail Check
 				if (!isValidEmail(email)) {
 					JOptionPane.showMessageDialog(window, "Check das E-Mail-Adresse!", "E-Mail Adresse Fehler", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
-
-				System.out.println("Name Ok?: " + !name.isEmpty() + " - " + name);
-				System.out.println("Vorname Ok?: " + !vorname.isEmpty() + " - " + vorname);
-				System.out.println("Emailcheck: "+ isValidEmail(email)+ ": " + email);
-				System.out.println("Favorit?: " + checkBox.isSelected());
-
-				if (name.isEmpty() &&
-						vorname.isEmpty() &&
-						email.isEmpty() &&
-						telefon.isEmpty()
-				){
-
-					JOptionPane.showMessageDialog(window, "Mindestens ein Feld muss nicht leer sein", "Erfolg", JOptionPane.ERROR_MESSAGE);
-				} else {
-					JOptionPane.showMessageDialog(window, "Bitte füllen Sie alle Felder korrekt aus.", "Fehler", JOptionPane.INFORMATION_MESSAGE);
+				// Validar que al menos un campo tenga algo
+				if (name.isEmpty() && vorname.isEmpty() && email.isEmpty() && telefon.isEmpty()) {
+					JOptionPane.showMessageDialog(window, "Mindestens ein Feld muss ausgefüllt sein", "Fehler", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 
+				// Validar que nombre y apellido no estén vacíos (puedes adaptar según tu lógica)
+				if (name.isEmpty() || vorname.isEmpty()) {
+					JOptionPane.showMessageDialog(window, "Bitte geben Sie Name und Vorname ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+				int option = JOptionPane.showConfirmDialog(
+						window,
+						"Möchten Sie den Kontakt speichern?",
+						"Kontakt speichern",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE
+				);
+
+				if (option == JOptionPane.YES_OPTION) {
+					BaseManager.kontakte.add(new Kontakt(typ,name,vorname,unternehmen,email,telefon,favorit));
+
+					// Endet Kontakt Hinzufügen
+					window.dispose();
+					tableModel.refresh();
+				} else {
+					//Zurück ins-SubProgramm
+				}
 			}
 		};
 		sendButton.addActionListener(sendFormular);

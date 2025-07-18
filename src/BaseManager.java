@@ -36,7 +36,7 @@ public class BaseManager {
 	}
 	public static void dataBaseStruktur(){
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataBasePfad))) {
-			writer.write("typ,vorname,nachname,unternehmen,email,telefon,favorit");
+			writer.write("typ,nachname,vorname,unternehmen,email,telefon,favorit");
 			writer.newLine();
 		} catch (IOException e) {
 			System.out.println("Fehler beim Schreiben der Datenstruktur.");
@@ -126,8 +126,8 @@ public class BaseManager {
 				String[] daten = line.split(",",-1);
 				if (daten.length == 7) {
 					String typ = daten[0];
-					String vorname = daten[1];
-					String nachname = daten[2];
+					String nachname = daten[1];
+					String vorname = daten[2];
 					String unternehmen = daten[3];
 					String email = daten[4];
 					String telefon = daten[5];
