@@ -1,7 +1,9 @@
 import javax.swing.*;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 public class MainGUI {
 
@@ -9,56 +11,75 @@ public class MainGUI {
 	JPanel panel = new JPanel();
 	GridBagLayout layout = new GridBagLayout();
 	GridBagConstraints gbc = new GridBagConstraints();
-	JPanel buttonPanel = new JPanel(new BorderLayout());
+	JPanel buttonPanel = new JPanel(new GridLayout(1,3,20,0));
 
 	//Buttons
 	JLabel filterLabel = new JLabel("Filtern nach...");
 	String[] filterListe = {"Filtern Auswählen","Typ","Nachnahme", "Vorname","Unternehmen", "E-Mail","Telefon Nr.", "Favorite Kontakte"};
 	JComboBox filterBox = new JComboBox<>(filterListe);
-	JButton filterButton = new JButton("Filter Ausführen");
+	JButton filterButton = new JButton("Filter Ausführen >>");
+	JTextField filterFeld = new JTextField();
 
 	JButton kontaktHinzu = new JButton("Kontakt Hinzufügen");
+	JButton kontaktModifizieren = new JButton("Kontakt Modifizieren");
 	JButton kontaktLoschen = new JButton("Kontakt Löschen");
 
 	public void go() {
 		//Kontakte im Program Aufladen
 		BaseManager.AgendaAufLaden();
 
+		//Color
+		Color colorBuchstaben = Color.ORANGE;
+		Color colorBackground = Color.DARK_GRAY;
+		Color colorForeground = Color.LIGHT_GRAY;
+		Color colorForeground2 = Color.ORANGE;
+
 		// Table Config
 		KontaktTableModel tabelle = new KontaktTableModel(BaseManager.kontakte);
 		JTable kontaktTable = new JTable(tabelle);
 		kontaktTable.setFillsViewportHeight(true);
 		kontaktTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		TableRowSorter<KontaktTableModel> sorter = new TableRowSorter<>(tabelle);
+		kontaktTable.setRowSorter(sorter);
 
 		//Tabelle Farben
-		kontaktTable.setBackground(Color.lightGray);
-		kontaktTable.getTableHeader().setBackground(Color.DARK_GRAY);
-		kontaktTable.getTableHeader().setForeground(Color.ORANGE);
-		kontaktTable.setGridColor(Color.DARK_GRAY);
+		kontaktTable.setBackground(colorForeground);
+		kontaktTable.getTableHeader().setBackground(colorBackground);
+		kontaktTable.getTableHeader().setForeground(colorBuchstaben);
+		kontaktTable.setGridColor(colorBackground);
 
 		// Scroll Pane
 		JScrollPane scrollPane = new JScrollPane(kontaktTable);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setPreferredSize(new Dimension(700,400));
+		scrollPane.setPreferredSize(new Dimension(800,400));
+		scrollPane.setBorder(BorderFactory.createLineBorder(colorBackground,20));
 
-		filterLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		filterLabel.setForeground(Color.ORANGE);
-		filterBox.setBackground(Color.DARK_GRAY);
-		filterBox.setForeground(Color.ORANGE);
-		filterButton.setBackground(Color.darkGray);
-		filterButton.setForeground(Color.orange);
+		//Filter Bereich
+		filterLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		filterLabel.setForeground(colorBuchstaben);
+		filterBox.setBackground(colorBackground);
+		filterBox.setForeground(colorForeground2);
+		filterButton.setBackground(colorBackground);
+		filterButton.setForeground(colorBuchstaben);
+		filterFeld.setBackground(colorForeground);
 
 		//Panel Definition
-		panel.setBackground(Color.DARK_GRAY);
+		panel.setBackground(colorBackground);
 		panel.setLayout(layout);
 
-		//Button Panel für Hinzufügen und Löschen
-		buttonPanel.setBackground(Color.darkGray);
-		kontaktLoschen.setBackground(Color.darkGray);
-		kontaktLoschen.setForeground(Color.ORANGE);
-		kontaktHinzu.setBackground(Color.darkGray);
-		kontaktHinzu.setForeground(Color.ORANGE);
+		//Button Panel für Hinzufügen Modifizieren und Löschen
+		buttonPanel.setBackground(colorBackground);
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
+		kontaktHinzu.setBackground(colorBackground);
+		kontaktHinzu.setForeground(colorBuchstaben);
+		kontaktModifizieren.setBackground(colorBackground);
+		kontaktModifizieren.setForeground(colorBuchstaben);
+		kontaktLoschen.setBackground(colorBackground);
+		kontaktLoschen.setForeground(colorBuchstaben);
+
+
 		buttonPanel.add(kontaktHinzu, BorderLayout.WEST);
+		buttonPanel.add(kontaktModifizieren,BorderLayout.CENTER);
 		buttonPanel.add(kontaktLoschen, BorderLayout.EAST);
 
 		//Layout Config
@@ -78,10 +99,19 @@ public class MainGUI {
 
 		//Filter Box
 		gbc.gridx = 1;
+		gbc.gridwidth = 1;
+		gbc.weightx = 0.3;
 		panel.add(filterBox,gbc);
 
-		//Filter Ausführen
 		gbc.gridx = 2;
+		gbc.gridwidth = 2;
+		gbc.weightx = 0.4;
+		panel.add(filterFeld,gbc);
+
+		//Filter Ausführen
+		gbc.gridx = 4;
+		gbc.gridwidth = 1;
+		gbc.weightx = 0.1;
 		panel.add(filterButton,gbc);
 
 		// Scroll Panel mit GridBag
@@ -102,9 +132,6 @@ public class MainGUI {
 		gbc.weighty = 0;
 		panel.add(buttonPanel, gbc);
 
-
-		//Panel Definition
-		//gbc.insets = new Insets(15, 5, 5, 5);
 
 		// Window Definition
 		window.add(panel);
@@ -134,8 +161,26 @@ public class MainGUI {
 		kontaktHinzu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Neueintraege neuKontakt = new Neueintraege(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
+				NeuKontakt neuKontakt = new NeuKontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
 				neuKontakt.go();
+			}
+		});
+		kontaktModifizieren.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = kontaktTable.getSelectedRow();
+
+				if (selectedRow == -1) {
+					JOptionPane.showMessageDialog(window, "Bitte wählen Sie einen Kontakt zum Bearbeiten aus.", "Kein Kontakt ausgewählt", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+
+				int modelRow = kontaktTable.convertRowIndexToModel(selectedRow);
+				KontaktTableModel model = (KontaktTableModel) kontaktTable.getModel();
+				Kontakt kontakt = model.getKontaktAt(modelRow);
+
+				ModKontakt modFenster = new ModKontakt(model, kontakt); // Le pasás el contacto a modificar
+				modFenster.go();
 			}
 		});
 		kontaktLoschen.addActionListener(new ActionListener() {
@@ -164,6 +209,41 @@ public class MainGUI {
 				}
 			}
 		});
+		filterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String kriterium = filterBox.getSelectedItem().toString();
+				String text = filterFeld.getText().trim();
+
+				if (kriterium.equals("Filtern Auswählen") || text.isEmpty()) {
+					sorter.setRowFilter(null);
+					return;
+				}
+
+				int columnIndex = switch (kriterium) {
+					case "Typ" -> 0;
+					case "Nachnahme" -> 1;
+					case "Vorname" -> 2;
+					case "Unternehmen" -> 3;
+					case "E-Mail" -> 4;
+					case "Telefon Nr." -> 5;
+					case "Favorite Kontakte" -> 6;
+					default -> -1;
+				};
+
+				if (columnIndex == -1) return;
+
+				if (kriterium.equals("Favorite Kontakte")) {
+					// Favorite Filtern
+					sorter.setRowFilter(RowFilter.regexFilter("★", columnIndex));
+				} else {
+					// Filter eingegebene Text
+					sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text), columnIndex));
+				}
+			}
+		});
+
+
 	}
 
 

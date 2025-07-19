@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Neueintraege {
+public class NeuKontakt {
 
 	private KontaktTableModel tableModel; // Referenz an Originall Intanz der Tabelle
 
-	public Neueintraege(KontaktTableModel model) {
+	public NeuKontakt(KontaktTableModel model) {
 		this.tableModel = model;
 	}
 
@@ -213,27 +213,43 @@ public class Neueintraege {
 				String telefon = textTelefon.getText().trim();
 				Boolean favorit = checkBox.isSelected();
 
+				/*
 				// E-Mail Check
 				if (!isValidEmail(email)) {
 					JOptionPane.showMessageDialog(window, "Check das E-Mail-Adresse!", "E-Mail Adresse Fehler", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
-				// Validar que al menos un campo tenga algo
-				if (name.isEmpty() && vorname.isEmpty() && email.isEmpty() && telefon.isEmpty()) {
-					JOptionPane.showMessageDialog(window, "Mindestens ein Feld muss ausgefüllt sein", "Fehler", JOptionPane.ERROR_MESSAGE);
+				 */
+
+				// Validierung: Zumindest ein Feld muss nicht leer sein
+				if (email.isEmpty() && telefon.isEmpty()) {
+					JOptionPane.showMessageDialog(window, "Eine E-Mail Adresse oder Telefonnummer muss ausgefüllt sein", "Fehler", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 
-				// Validar que nombre y apellido no estén vacíos (puedes adaptar según tu lógica)
-				if (name.isEmpty() || vorname.isEmpty()) {
-					JOptionPane.showMessageDialog(window, "Bitte geben Sie Name und Vorname ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
+				// Validierung: Zumindest Name, Vorname oder Unternehmen muss nicht leer sein
+				if (name.isEmpty() && vorname.isEmpty() && unternehmen.isEmpty()) {
+					JOptionPane.showMessageDialog(window, "Bitte geben Sie mindestens Name, Vorname oder Unternehmen ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+				//Warnings:
+				String warnung = "";
+				if (name.isEmpty()) warnung += "- Name Feld ist leer\n";
+				if (vorname.isEmpty()) warnung += "- Vorname Feld ist leer\n";
+				if (telefon.isEmpty()) warnung += "- Telefonnummer Feld ist leer\n";
+				if (!isValidTelefon(telefon)) warnung += "- Überprüfen Telefonnummer(zu Kurz oder mit Buchstaben\n";
+				if (email.isEmpty()) warnung += "- E-Mail Feld ist leer\n";
+				if (!isValidEmail(email)) warnung += "- Überprüfen Sie das Format der E-Mail-Adresse\n";
+
+				String nachricht = warnung.isEmpty()
+						? "Möchten Sie den Kontakt speichern?"
+						: "Folgende Felder sind leer oder unvollständig:\n" + warnung + "\nTrotzdem speichern?";
+
 
 				int option = JOptionPane.showConfirmDialog(
 						window,
-						"Möchten Sie den Kontakt speichern?",
+						nachricht,
 						"Kontakt speichern",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE
@@ -242,7 +258,7 @@ public class Neueintraege {
 				if (option == JOptionPane.YES_OPTION) {
 					BaseManager.kontakte.add(new Kontakt(typ,name,vorname,unternehmen,email,telefon,favorit));
 
-					// Endet Kontakt Hinzufügen
+					// Endet Kontakt-Hinzufügen
 					window.dispose();
 					tableModel.refresh();
 				} else {
@@ -257,5 +273,8 @@ public class Neueintraege {
 		Pattern pattern = Pattern.compile(emailRegex);
 		Matcher matcher = pattern.matcher(email);
 		return matcher.matches();
+	}
+	private boolean isValidTelefon(String telefonnummer){
+		return telefonnummer.matches("^[0-9 +]{7,20}$");
 	}
 }

@@ -95,7 +95,7 @@ public class Kontakt {
 		return KontaktTyp.UNBEKANNT;
 	}
 
-	public String typString(KontaktTyp typ){
+	public String typToString(KontaktTyp typ){
 		if(typ == KontaktTyp.LIEFERANT){
 			return "LIEFERANT";
 		} else if (typ == KontaktTyp.KUNDE) {
@@ -104,7 +104,7 @@ public class Kontakt {
 		return "UNBEKANNT";
 	}
 	public String kontaktToCsv(){
-		return typString(this.typ)+ "," +
+		return typToString(this.typ)+ "," +
 				getVorname()+ "," +
 				getNachname()+ "," +
 				getUnternehmen()+ "," +
@@ -117,6 +117,6 @@ public class Kontakt {
 	public String toString() {
 		//return "|" + typString(this.typ) + "| " + nachname.toUpperCase() + " " + vorname + " // " + eMail + " // " + telefon + " // Favorit" + (isFavorit()? "[*]" : "[ ]");
 		return String.format("%-10s %-12s %-12s %-20s %-35s %-15s %-8s",
-				typString(this.typ), nachname.toUpperCase(), vorname, unternehmen, eMail, telefon, favorit ? "★" : "");
+				typToString(this.typ), nachname.toUpperCase(), vorname, unternehmen, eMail, telefon, favorit ? "★" : "");
 	}
 }
