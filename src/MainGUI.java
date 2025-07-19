@@ -18,6 +18,7 @@ public class MainGUI {
 	String[] filterListe = {"Filtern Auswählen","Typ","Nachnahme", "Vorname","Unternehmen", "E-Mail","Telefon Nr.", "Favorite Kontakte"};
 	JComboBox filterBox = new JComboBox<>(filterListe);
 	JButton filterButton = new JButton("Filter Ausführen >>");
+	JButton filterWeg = new JButton("Filter Löschen");
 	JTextField filterFeld = new JTextField();
 
 	JButton kontaktHinzu = new JButton("Kontakt Hinzufügen");
@@ -42,6 +43,60 @@ public class MainGUI {
 		TableRowSorter<KontaktTableModel> sorter = new TableRowSorter<>(tabelle);
 		kontaktTable.setRowSorter(sorter);
 
+		//Key Binding:
+		InputMap im = kontaktTable.getInputMap(JTable.WHEN_FOCUSED);
+		ActionMap am = kontaktTable.getActionMap();
+
+		im.put(KeyStroke.getKeyStroke("DELETE"), "deleteRow");
+		am.put("deleteRow", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = kontaktTable.getSelectedRow();
+
+				if (selectedRow == -1) {
+					JOptionPane.showMessageDialog(window, "Bitte wählen Sie einen Kontakt zum Löschen aus.", "Kein Kontakt ausgewählt", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+
+				int modelRow = kontaktTable.convertRowIndexToModel(selectedRow);
+				KontaktTableModel model = (KontaktTableModel) kontaktTable.getModel();
+				Kontakt kontaktToDelete = model.getKontaktAt(modelRow);
+
+				int confirm = JOptionPane.showConfirmDialog(window,
+						"Möchten Sie den Kontakt wirklich löschen?",
+						"Kontakt löschen",
+						JOptionPane.YES_NO_OPTION);
+
+				if (confirm == JOptionPane.YES_OPTION) {
+					BaseManager.kontakte.remove(kontaktToDelete);
+					model.refresh();
+				}
+			}
+		});
+
+		//Key Binding Filter
+		filterFeld.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "applyFilter");
+		filterFeld.getActionMap().put("applyFilter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterButton.doClick();
+			}
+		});
+		// ESCAPE zum Filter löschen
+		InputMap imFilter = filterFeld.getInputMap(JComponent.WHEN_FOCUSED);
+		ActionMap amFilter = filterFeld.getActionMap();
+
+		imFilter.put(KeyStroke.getKeyStroke("ESCAPE"), "clearFilter");
+		amFilter.put("clearFilter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				filterFeld.setText("");
+				sorter.setRowFilter(null);
+			}
+		});
+
+
+
 		//Tabelle Farben
 		kontaktTable.setBackground(colorForeground);
 		kontaktTable.getTableHeader().setBackground(colorBackground);
@@ -62,6 +117,9 @@ public class MainGUI {
 		filterButton.setBackground(colorBackground);
 		filterButton.setForeground(colorBuchstaben);
 		filterFeld.setBackground(colorForeground);
+		filterWeg.setBackground(colorBackground);
+		filterWeg.setForeground(colorBuchstaben);
+
 
 		//Panel Definition
 		panel.setBackground(colorBackground);
@@ -77,16 +135,17 @@ public class MainGUI {
 		kontaktLoschen.setBackground(colorBackground);
 		kontaktLoschen.setForeground(colorBuchstaben);
 
-
-		buttonPanel.add(kontaktHinzu, BorderLayout.WEST);
-		buttonPanel.add(kontaktModifizieren,BorderLayout.CENTER);
-		buttonPanel.add(kontaktLoschen, BorderLayout.EAST);
+		//Button Panel Config
+		buttonPanel.add(kontaktHinzu);
+		buttonPanel.add(kontaktModifizieren);
+		buttonPanel.add(kontaktLoschen);
 
 		//Layout Config
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5, 5, 5, 5);
 		gbc.weightx = 0.2;
 		gbc.gridwidth = 5;
+
 		gbc.ipadx = 10;
 		gbc.ipady = 10;
 
@@ -97,26 +156,44 @@ public class MainGUI {
 		gbc.weightx = 0.1;
 		panel.add(filterLabel,gbc);
 
-		//Filter Box
+		//Filter ComboBox
 		gbc.gridx = 1;
+		gbc.gridy = 0;
 		gbc.gridwidth = 1;
-		gbc.weightx = 0.3;
+		gbc.weightx = 0.2;
 		panel.add(filterBox,gbc);
 
+		//Filter TextFeld
 		gbc.gridx = 2;
+		gbc.gridy = 0;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.4;
 		panel.add(filterFeld,gbc);
 
 		//Filter Ausführen
 		gbc.gridx = 4;
+		gbc.gridy = 0;
 		gbc.gridwidth = 1;
 		gbc.weightx = 0.1;
 		panel.add(filterButton,gbc);
 
-		// Scroll Panel mit GridBag
+		//Filter Weg
 		gbc.gridx = 0;
 		gbc.gridy = 1;
+		gbc.gridwidth = 1;
+		gbc.weightx = 0.1;
+		panel.add(filterWeg,gbc);
+
+		//Leer Zeile
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.gridwidth = 5;
+		gbc.weighty = 0;
+		panel.add(Box.createVerticalStrut(10), gbc);
+
+		// Scroll Panel mit GridBag
+		gbc.gridx = 0;
+		gbc.gridy = 3;
 		gbc.gridwidth = 5;
 		gbc.gridheight = 2;
 		gbc.weightx = 1.0;
@@ -124,9 +201,10 @@ public class MainGUI {
 		gbc.fill = GridBagConstraints.BOTH;
 		panel.add(scrollPane, gbc);
 
-		//Kontakt Management
+		//Kontakt Management Knöpfe
+		gbc.gridheight = 1;
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 5;
 		gbc.gridwidth = 5;
 		gbc.weightx = 1.0;
 		gbc.weighty = 0;
@@ -144,14 +222,14 @@ public class MainGUI {
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				int option = JOptionPane.showConfirmDialog(
 						window,
-						"Möchten Sie die Änderungen speichern und das Programm schließen?",
+						"Möchten Sie die Änderungen beim Schließen des Programms speichern?",
 						"Programm beenden",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE
 				);
 
 				if (option == JOptionPane.YES_OPTION) {
-					Main.close(); // Database Speichern
+					BaseManager.AgendaAbladen();// Database Speichern
 					System.exit(0); // Exit Program + Speichern
 				} else if (option == JOptionPane.NO_OPTION) {
 					System.exit(0); // Exit Program ohne Speichern
@@ -242,11 +320,11 @@ public class MainGUI {
 				}
 			}
 		});
-
-
+		filterWeg.addActionListener(e -> {
+			filterFeld.setText("");
+			sorter.setRowFilter(null);
+		});
 	}
-
-
 }
 
 

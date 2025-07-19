@@ -2,12 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NeuKontakt {
 
-	private KontaktTableModel tableModel; // Referenz an Originall Intanz der Tabelle
+	private KontaktTableModel tableModel; // Referenz an Original Instanz der Tabelle
 
 	public NeuKontakt(KontaktTableModel model) {
 		this.tableModel = model;
@@ -17,17 +18,18 @@ public class NeuKontakt {
 	JPanel panel = new JPanel();
 	GridBagLayout layout = new GridBagLayout();
 	GridBagConstraints gbc = new GridBagConstraints();
-
 	JButton sendButton = new JButton("Eintage Bestätigen");
 
 	//Buttons
 	//Anrede
-	String[] eintrageTyp = {"Bitte wählen","Kunde","Lieferant","Nicht Angegeben"};
-	JComboBox typBox = new JComboBox<>(eintrageTyp);
+	String[] eintrageTyp = {"Bitte wählen","Kunde","Lieferant","Unbekannt"};
+	//JComboBox typBox = new JComboBox<>(eintrageTyp);
+	//JComboBox typBox = new JComboBox<>(KontaktTyp.values());
+	JComboBox<Object> typBox = new JComboBox<>();
 	JLabel lblTyp = new JLabel("Kontakt Typ");
 
 	//Name
-	JLabel lblName = new JLabel("Name");
+	JLabel lblName = new JLabel("NAME");
 	JTextField textName = new JTextField(20);
 
 	//Vorname
@@ -80,6 +82,10 @@ public class NeuKontakt {
 		lblTelefon.setForeground(Color.ORANGE);
 		lblFavorit.setForeground(Color.ORANGE);
 
+		typBox.addItem("Bitte wählen");
+		for (KontaktTyp typ : KontaktTyp.values()) {
+			typBox.addItem(typ);
+		}
 
 		checkBox.setOpaque(true);
 		checkBox.setBackground(Color.darkGray);
@@ -204,8 +210,8 @@ public class NeuKontakt {
 		ActionListener sendFormular = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String typAuswahl = typBox.getSelectedItem().toString();
-				KontaktTyp typ = Kontakt.typStringToTyp(typAuswahl);
+
+				KontaktTyp typ = (KontaktTyp) typBox.getSelectedItem();
 				String name = textName.getText().trim();
 				String vorname = textVorname.getText().trim();
 				String unternehmen = textUnternehmen.getText().trim();

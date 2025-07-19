@@ -86,15 +86,6 @@ public class Kontakt {
 		this.favorit = favorit;
 	}
 
-	public static KontaktTyp typStringToTyp(String typ){
-		if(typ.equalsIgnoreCase("LIEFERANT")){
-			return KontaktTyp.LIEFERANT;
-		} else if (typ.equalsIgnoreCase("KUNDE")) {
-			return KontaktTyp.KUNDE;
-		}
-		return KontaktTyp.UNBEKANNT;
-	}
-
 	public String typToString(KontaktTyp typ){
 		if(typ == KontaktTyp.LIEFERANT){
 			return "LIEFERANT";
@@ -118,5 +109,14 @@ public class Kontakt {
 		//return "|" + typString(this.typ) + "| " + nachname.toUpperCase() + " " + vorname + " // " + eMail + " // " + telefon + " // Favorit" + (isFavorit()? "[*]" : "[ ]");
 		return String.format("%-10s %-12s %-12s %-20s %-35s %-15s %-8s",
 				typToString(this.typ), nachname.toUpperCase(), vorname, unternehmen, eMail, telefon, favorit ? "★" : "");
+	}
+	//Archiv
+	public static KontaktTyp typStringToTyp(String typ){
+		if(typ.equalsIgnoreCase("LIEFERANT")){
+			return KontaktTyp.LIEFERANT;
+		} else if (typ.equalsIgnoreCase("KUNDE")) {
+			return KontaktTyp.KUNDE;
+		}
+		return KontaktTyp.UNBEKANNT;
 	}
 }

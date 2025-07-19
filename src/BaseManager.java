@@ -69,24 +69,6 @@ public class BaseManager {
 		}
 	}
 
-	public static void addKontaktStringobsolete(String filename, String content){
-
-		try {
-			FileWriter fileWriter = new FileWriter(filename, true);
-			fileWriter.write(System.lineSeparator());
-			fileWriter.write(content);
-			fileWriter.write(System.lineSeparator());
-			fileWriter.close();
-
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void addKontaktObj(ArrayList kontaktList, Kontakt kontakt){
-		kontaktList.add(kontakt);
-	}
-
 	public static void readDatabase() {
 		int index = 1;
 		for (Kontakt kontakt : kontakte) {
@@ -106,7 +88,6 @@ public class BaseManager {
 		}catch (FileNotFoundException e){
 			System.out.println("Datei nicht da");
 		}
-
 	}
 	public static void deleteFile(String filename){
 		File file = new File(filename);
@@ -138,8 +119,9 @@ public class BaseManager {
 					Kontakt kontakt = new Kontakt(kontaktTyp, vorname, nachname, unternehmen, email, telefon, favorit);
 					kontakte.add(kontakt);
 
-					System.out.println(index + ": " + kontakt);
-					index++;
+					//Um zu sehen, die Kontakte in der Konsole während Aufladung:
+					//System.out.println(index + ": " + kontakt);
+					//index++;
 				} else {
 					System.out.println("Ungültige Zeile (" + index + ") " + line);
 				}
@@ -173,6 +155,8 @@ public class BaseManager {
 			default -> KontaktTyp.UNBEKANNT;
 		};
 	}
+	//Archivierte Methoden
+	//Kontakt Speichern
 	public static void kontaktSpeichern() {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(dataBase))) {
 			for (Kontakt c : kontakte) {

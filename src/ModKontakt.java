@@ -24,8 +24,7 @@ public class ModKontakt {
 
 	//Buttons
 	//Anrede
-	String[] eintrageTyp = {"Bitte wählen","Kunde","Lieferant","Nicht Angegeben"};
-	JComboBox typBox = new JComboBox<>(eintrageTyp);
+	JComboBox<Object> typBox = new JComboBox<>();
 	JLabel lblTyp = new JLabel("Kontakt Typ");
 
 	//Name
@@ -52,6 +51,7 @@ public class ModKontakt {
 	JCheckBox checkBox = new JCheckBox();
 
 	public void go(){
+
 		//Felder zum Kontakt
 		typBox.setSelectedItem(kontakt.getTyp());
 		textName.setText(kontakt.getNachname());
@@ -60,8 +60,6 @@ public class ModKontakt {
 		textEmail.setText(kontakt.geteMail());
 		textTelefon.setText(kontakt.getTelefon());
 		checkBox.setSelected(kontakt.isFavorit());
-
-
 
 		//Layout
 		gbc.fill = GridBagConstraints.BOTH;
@@ -92,6 +90,11 @@ public class ModKontakt {
 		lblTelefon.setForeground(Color.ORANGE);
 		lblFavorit.setForeground(Color.ORANGE);
 
+		//TypBox
+		//typBox.addItem(null);
+		for (KontaktTyp typ : KontaktTyp.values()) {
+			typBox.addItem(typ);
+		}
 
 		checkBox.setOpaque(true);
 		checkBox.setBackground(Color.darkGray);
@@ -219,23 +222,13 @@ public class ModKontakt {
 		ActionListener sendFormular = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String typAuswahl = typBox.getSelectedItem().toString();
-				KontaktTyp typ = Kontakt.typStringToTyp(typAuswahl);
+				KontaktTyp typ = (KontaktTyp) typBox.getSelectedItem();
 				String name = textName.getText().trim();
 				String vorname = textVorname.getText().trim();
 				String unternehmen = textUnternehmen.getText().trim();
 				String email = textEmail.getText().trim();
 				String telefon = textTelefon.getText().trim();
 				Boolean favorit = checkBox.isSelected();
-
-				/*
-				// E-Mail Check
-				if (!isValidEmail(email)) {
-					JOptionPane.showMessageDialog(window, "Check das E-Mail-Adresse!", "E-Mail Adresse Fehler", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-				 */
 
 				// Validierung: Zumindest ein Feld muss nicht leer sein
 				if (email.isEmpty() && telefon.isEmpty()) {
