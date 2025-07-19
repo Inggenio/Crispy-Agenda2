@@ -79,8 +79,8 @@ Built entirely with `Java Swing`, using:
 
 ## 🧑‍💻 Author
 
-Developed by [Tu nombre aquí] 🇩🇪🇦🇷  
-Passionate about software development, learning Java and building useful desktop apps.
+Developed by German Hoffmann 🇩🇪🇦🇷  
+Passionate about software development, learning Java and building desktop apps.
 
 ---
 
