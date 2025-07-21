@@ -47,7 +47,7 @@ public class BaseManager {
 				if (created) {
 					System.out.println("Database nicht gefunden. Datei wurde neu angelegt.");
 					dataBaseStruktur();
-					MusterKontakte.generateKontakts();
+					//MusterKontakte.generateKontakts();
 				} else {
 					System.out.println("Die Datei konnte nicht erstellt werden.");
 				}
@@ -61,7 +61,7 @@ public class BaseManager {
 	}
 	public static void dataBaseStruktur(){
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataBasePfad))) {
-			writer.write("typ,nachname,vorname,unternehmen,email,telefon,favorit");
+			writer.write("Typ,Nachname,Vorname,Firma,Adresse,PLZ,Stadt,Email,Telefon,Favorit");
 			writer.newLine();
 		} catch (IOException e) {
 			System.out.println("Fehler beim Schreiben der Datenstruktur.");
@@ -72,17 +72,20 @@ public class BaseManager {
 	public static void addKontaktString(String content){
 		String[] daten = content.trim().split(",");
 
-		if (daten.length == 7) {
+		if (daten.length == 10) {
 			try {
 				KontaktTyp typ = typErkennung(daten[0].trim());
-				String vorname = daten[1].trim();
-				String nachname = daten[2].trim();
-				String unternehmen = daten[3].trim();
-				String email = daten[4].trim();
-				String telefon = daten[5].trim();
-				boolean favorit = Boolean.parseBoolean(daten[6].trim());
+				String nachname = daten[1].trim();
+				String vorname = daten[2].trim();
+				String firma = daten[3].trim();
+				String adresse = daten[4].trim();
+				String plz = daten[5].trim();
+				String stadt = daten[6].trim();
+				String email = daten[7].trim();
+				String telefon = daten[8].trim();
+				boolean favorit = Boolean.parseBoolean(daten[9].trim());
 
-				Kontakt kontakt = new Kontakt(typ, vorname, nachname, unternehmen, email, telefon, favorit);
+				Kontakt kontakt = new Kontakt(typ, nachname, vorname, firma, adresse, plz, stadt, email, telefon, favorit);
 				kontakte.add(kontakt);
 				System.out.println("Kontakt hinzugefügt: " + kontakt);
 
@@ -130,23 +133,26 @@ public class BaseManager {
 			int index = 1;
 			while ((line = br.readLine()) != null) {
 				String[] daten = line.split(",",-1);
-				if (daten.length == 7) {
+				if (daten.length == 10) {
 					String typ = daten[0];
 					String nachname = daten[1];
 					String vorname = daten[2];
-					String unternehmen = daten[3];
-					String email = daten[4];
-					String telefon = daten[5];
-					boolean favorit = daten[6].equalsIgnoreCase("true") || daten[6].equalsIgnoreCase("ja");
+					String firma = daten[3];
+					String adresse = daten[4];
+					String plz = daten[5];
+					String stadt = daten[6];
+					String email = daten[7];
+					String telefon = daten[8];
+					boolean favorit = daten[9].equalsIgnoreCase("true") || daten[9].equalsIgnoreCase("ja");
 
 					KontaktTyp kontaktTyp = typErkennung(typ.trim());
 
-					Kontakt kontakt = new Kontakt(kontaktTyp, vorname, nachname, unternehmen, email, telefon, favorit);
+					Kontakt kontakt = new Kontakt(kontaktTyp,nachname,vorname,firma,adresse,plz,stadt,email, telefon, favorit);
 					kontakte.add(kontakt);
 
 					//Um zu sehen, die Kontakte in der Konsole während Aufladung:
 					//System.out.println(index + ": " + kontakt);
-					//index++;
+					index++;
 				} else {
 					System.out.println("Ungültige Zeile (" + index + ") " + line);
 				}
@@ -159,7 +165,7 @@ public class BaseManager {
 	public static void AgendaAbladen(){
 		try {
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataBasePfad))) {
-				writer.write("typ,vorname,nachname,unternehmen,email,telefon,favorit");
+				writer.write("typ,nachname,vorname,firma,adresse,plz,stadt,email,telefon,favorit");
 				writer.newLine();
 				for (Kontakt kontakt : kontakte){
 					writer.write(kontakt.kontaktToCsv());

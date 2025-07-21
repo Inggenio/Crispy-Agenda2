@@ -40,7 +40,7 @@ public class MainGUI {
 
 	//Buttons
 	JLabel filterLabel = new JLabel("Filtern nach...");
-	String[] filterListe = {"Filtern Auswählen","Typ","Nachnahme", "Vorname","Unternehmen", "E-Mail","Telefon Nr.", "Favorite Kontakte"};
+	String[] filterListe = {"Filtern Auswählen","Typ","Nachnahme", "Vorname","Unternehmen", "Adresse","PLZ","Stadt","E-Mail","Telefon Nr.", "Favorite Kontakte"};
 	JComboBox filterBox = new JComboBox<>(filterListe);
 	JButton filterButton = new JButton("Filter Ausführen >>");
 	JButton filterWeg = new JButton("Filter Löschen");
@@ -67,6 +67,28 @@ public class MainGUI {
 		kontaktTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		TableRowSorter<KontaktTableModel> sorter = new TableRowSorter<>(tabelle);
 		kontaktTable.setRowSorter(sorter);
+
+
+		kontaktTable.setFont(new Font("SansSerif", Font.PLAIN,16));
+		kontaktTable.setRowHeight(24);
+		kontaktTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 15));
+
+		//Verschiedene Font:
+		//new Font("Segoe UI", Font.PLAIN, 16);
+		//new Font("Arial", Font.PLAIN, 16);
+		//new Font("Courier New", Font.PLAIN, 16);
+
+		//Kontakt Table Breite:
+		kontaktTable.getColumnModel().getColumn(0).setPreferredWidth(70);  // Typ
+		kontaktTable.getColumnModel().getColumn(1).setPreferredWidth(120); // Nachname
+		kontaktTable.getColumnModel().getColumn(2).setPreferredWidth(80); // Vorname
+		kontaktTable.getColumnModel().getColumn(3).setPreferredWidth(120); // Unternehmen
+		kontaktTable.getColumnModel().getColumn(4).setPreferredWidth(200); // Adresse
+		kontaktTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // PLZ
+		kontaktTable.getColumnModel().getColumn(6).setPreferredWidth(150); // Stadt
+		kontaktTable.getColumnModel().getColumn(7).setPreferredWidth(250); // E-Mail
+		kontaktTable.getColumnModel().getColumn(8).setPreferredWidth(120); // Telefon
+		kontaktTable.getColumnModel().getColumn(9).setPreferredWidth(25);  // Favorit
 
 		//Key Binding:
 		InputMap im = kontaktTable.getInputMap(JTable.WHEN_FOCUSED);
@@ -131,7 +153,7 @@ public class MainGUI {
 		// Scroll Pane
 		JScrollPane scrollPane = new JScrollPane(kontaktTable);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setPreferredSize(new Dimension(800,400));
+		scrollPane.setPreferredSize(new Dimension(1000,400));
 		scrollPane.setBorder(BorderFactory.createLineBorder(colorBackground,20));
 
 		//Filter Bereich
@@ -238,7 +260,8 @@ public class MainGUI {
 
 		// Window Definition
 		window.add(panel);
-		window.setSize(new Dimension(800, 600));
+		window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		window.setSize(new Dimension(1000, 800));
 		window.setVisible(true);
 		//Window Listener um Daten zur Datenbank aktualisieren
 		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -282,7 +305,7 @@ public class MainGUI {
 				KontaktTableModel model = (KontaktTableModel) kontaktTable.getModel();
 				Kontakt kontakt = model.getKontaktAt(modelRow);
 
-				ModKontakt modFenster = new ModKontakt(model, kontakt); // Le pasás el contacto a modificar
+				ModKontakt modFenster = new ModKontakt(model, kontakt);
 				modFenster.go();
 			}
 		});
@@ -328,9 +351,12 @@ public class MainGUI {
 					case "Nachnahme" -> 1;
 					case "Vorname" -> 2;
 					case "Unternehmen" -> 3;
-					case "E-Mail" -> 4;
-					case "Telefon Nr." -> 5;
-					case "Favorite Kontakte" -> 6;
+					case "Adresse" -> 4;
+					case "PLZ" -> 5;
+					case "Stadt" -> 6;
+					case "E-Mail" -> 7;
+					case "Telefon Nr." -> 8;
+					case "Favorite Kontakte" -> 9;
 					default -> -1;
 				};
 

@@ -22,16 +22,27 @@
  SOFTWARE.
 */
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Main {
 	public static void main(String[] args) {
 		run();
 	}
 	public static void run(){
+		System.out.println("-->>Programm wird inisialisiert <<--");
+		System.out.println("Init:" + timeStamp());
 		System.out.println("Checking Database...");
 		BaseManager.checkDatabase();
 		System.out.println("Database wird aufgeladen werden...");
 		MainGUI gui = new MainGUI();
 		gui.go();
 	}
-
+	private static String timeStamp(){
+		LocalDateTime jetz = LocalDateTime.now();
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm:ss");
+		return jetz.format(format);
+	}
 }

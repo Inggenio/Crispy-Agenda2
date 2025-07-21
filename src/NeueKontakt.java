@@ -44,11 +44,8 @@ public class NeueKontakt {
 	JButton sendButton = new JButton("Eintage Bestätigen");
 
 	//Buttons
-	//Anrede
-	String[] eintrageTyp = {"Bitte wählen","Kunde","Lieferant","Unbekannt"};
-	//JComboBox typBox = new JComboBox<>(eintrageTyp);
-	//JComboBox typBox = new JComboBox<>(KontaktTyp.values());
-	JComboBox<Object> typBox = new JComboBox<>();
+	//JBox KontaktTyp
+	JComboBox<KontaktTyp> typBox = new JComboBox<>(KontaktTyp.values());
 	JLabel lblTyp = new JLabel("Kontakt Typ");
 
 	//Name
@@ -59,13 +56,25 @@ public class NeueKontakt {
 	JLabel lblVorname = new JLabel("Vorname");
 	JTextField textVorname = new JTextField(20);
 
+	//Unternehmen
+	JLabel lblFirma = new JLabel("Firma");
+	JTextField textFirma = new JTextField(20);
+
+	//Adresse
+	JLabel lblAdresse = new JLabel("Adresse");
+	JTextField textAdresse = new JTextField(20);
+
+	//PLZ
+	JLabel lblPlz = new JLabel("PLZ");
+	JTextField textPlz = new JTextField(20);
+
+	//Stadt
+	JLabel lblStadt = new JLabel("Stadt");
+	JTextField textStadt = new JTextField(20);
+
 	//Email
 	JLabel lblEmail = new JLabel("E-Mail");
 	JTextField textEmail = new JTextField(20);
-
-	//Adresse
-	JLabel lblUnternehmen = new JLabel("Unternehmen");
-	JTextField textUnternehmen = new JTextField(20);
 
 	//Telefonnummer
 	JLabel lblTelefon = new JLabel("Telefonnummer");
@@ -90,22 +99,27 @@ public class NeueKontakt {
 
 		//Buttons und Felder
 		//Label Alignment
+		lblTyp.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblVorname.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblFirma.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblAdresse.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblPlz.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblStadt.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblUnternehmen.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTyp.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTelefon.setHorizontalAlignment(SwingConstants.RIGHT);
 
+		lblTyp.setForeground(Color.ORANGE);
 		lblName.setForeground(Color.ORANGE);
 		lblVorname.setForeground(Color.ORANGE);
+		lblFirma.setForeground(Color.ORANGE);
+		lblAdresse.setForeground(Color.ORANGE);
+		lblPlz.setForeground(Color.ORANGE);
+		lblStadt.setForeground(Color.ORANGE);
 		lblEmail.setForeground(Color.ORANGE);
-		lblUnternehmen.setForeground(Color.ORANGE);
-		lblTyp.setForeground(Color.ORANGE);
 		lblTelefon.setForeground(Color.ORANGE);
 		lblFavorit.setForeground(Color.ORANGE);
 
-		typBox.addItem("Bitte wählen");
 		for (KontaktTyp typ : KontaktTyp.values()) {
 			typBox.addItem(typ);
 		}
@@ -161,24 +175,63 @@ public class NeueKontakt {
 		gbc.gridy = 2;
 		gbc.gridwidth = 1;
 		gbc.weightx = 0.1;
-		panel.add(lblUnternehmen,gbc);
+		panel.add(lblFirma,gbc);
 
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.1;
-		panel.add(textUnternehmen,gbc);
+		panel.add(textFirma,gbc);
+
+		//Adresse
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.gridwidth = 1;
+		gbc.weightx = 0.1;
+		panel.add(lblAdresse,gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		gbc.gridwidth = 2;
+		gbc.weightx = 0.1;
+		panel.add(textAdresse,gbc);
+
+		//PLZ
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		gbc.gridwidth = 1;
+		gbc.weightx = 0.1;
+		panel.add(lblPlz,gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 4;
+		gbc.gridwidth = 2;
+		gbc.weightx = 0.1;
+		panel.add(textPlz,gbc);
+
+		//Stadt
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		gbc.gridwidth = 1;
+		gbc.weightx = 0.1;
+		panel.add(lblStadt,gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 5;
+		gbc.gridwidth = 2;
+		gbc.weightx = 0.1;
+		panel.add(textStadt,gbc);
 
 		//Email
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 6;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.1;
 		panel.add(lblEmail,gbc);
 
 		gbc.gridx = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 6;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.1;
@@ -186,14 +239,14 @@ public class NeueKontakt {
 
 		//Telefonnnummer
 		gbc.gridx = 0;
-		gbc.gridy = 4;
+		gbc.gridy = 7;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.1;
 		panel.add(lblTelefon,gbc);
 
 		gbc.gridx = 1;
-		gbc.gridy = 4;
+		gbc.gridy = 7;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 2;
 		gbc.weightx = 0.1;
@@ -203,26 +256,26 @@ public class NeueKontakt {
 
 		//Favorit Kontakt?
 		gbc.gridx = 0;
-		gbc.gridy = 5;
+		gbc.gridy = 8;
 		panel.add(lblFavorit,gbc);
 
 		//Checkbox
 		checkBox.setBackground(Color.LIGHT_GRAY);
 		checkBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		gbc.gridx = 1;
-		gbc.gridy = 5;
+		gbc.gridy = 8;
 		panel.add(checkBox,gbc);
 
 		gbc.insets = new Insets(15,5,5,5);
 
 		gbc.gridx = 1;
-		gbc.gridy = 6;
+		gbc.gridy = 9;
 		gbc.gridwidth = 2;
 		panel.add(sendButton, gbc);
 
 		// Window Definition
 		window.add(panel);
-		window.setSize(new Dimension(700,500));
+		window.setSize(new Dimension(800,700));
 		window.setVisible(true);
 		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -237,19 +290,13 @@ public class NeueKontakt {
 				KontaktTyp typ = (KontaktTyp) typBox.getSelectedItem();
 				String name = textName.getText().trim();
 				String vorname = textVorname.getText().trim();
-				String unternehmen = textUnternehmen.getText().trim();
+				String firma = textFirma.getText().trim();
+				String adresse = textAdresse.getText().trim();
+				String plz = textPlz.getText().trim();
+				String stadt = textStadt.getText().trim();
 				String email = textEmail.getText().trim();
 				String telefon = textTelefon.getText().trim();
 				Boolean favorit = checkBox.isSelected();
-
-				/*
-				// E-Mail Check
-				if (!isValidEmail(email)) {
-					JOptionPane.showMessageDialog(window, "Check das E-Mail-Adresse!", "E-Mail Adresse Fehler", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-				 */
 
 				// Validierung: Zumindest ein Feld muss nicht leer sein
 				if (email.isEmpty() && telefon.isEmpty()) {
@@ -258,7 +305,7 @@ public class NeueKontakt {
 				}
 
 				// Validierung: Zumindest Name, Vorname oder Unternehmen muss nicht leer sein
-				if (name.isEmpty() && vorname.isEmpty() && unternehmen.isEmpty()) {
+				if (name.isEmpty() && vorname.isEmpty() && firma.isEmpty()) {
 					JOptionPane.showMessageDialog(window, "Bitte geben Sie mindestens Name, Vorname oder Unternehmen ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -266,8 +313,12 @@ public class NeueKontakt {
 				String warnung = "";
 				if (name.isEmpty()) warnung += "- Name Feld ist leer\n";
 				if (vorname.isEmpty()) warnung += "- Vorname Feld ist leer\n";
+				if (firma.isEmpty()) warnung += "- Firma Feld ist leer\n";
+				if (adresse.isEmpty()) warnung += "- Adresse Feld ist leer";
+				if (!isValidPlz(plz)) warnung += "- PLZ muss 5 Zahlen lang sein\n";
+				if (stadt.isEmpty()) warnung += "- Stadt Feld ist leer\n";
 				if (telefon.isEmpty()) warnung += "- Telefonnummer Feld ist leer\n";
-				if (!isValidTelefon(telefon)) warnung += "- Überprüfen Telefonnummer(zu Kurz oder mit Buchstaben\n";
+				if (!isValidTelefon(telefon)) warnung += "- Überprüfen Telefonnummer(Kurz/Buchstaben)\n";
 				if (email.isEmpty()) warnung += "- E-Mail Feld ist leer\n";
 				if (!isValidEmail(email)) warnung += "- Überprüfen Sie das Format der E-Mail-Adresse\n";
 
@@ -285,7 +336,7 @@ public class NeueKontakt {
 				);
 
 				if (option == JOptionPane.YES_OPTION) {
-					BaseManager.kontakte.add(new Kontakt(typ,name,vorname,unternehmen,email,telefon,favorit));
+					BaseManager.kontakte.add(new Kontakt(typ,name,vorname,firma,adresse,plz,stadt,email,telefon,favorit));
 
 					// Endet Kontakt-Hinzufügen
 					window.dispose();
@@ -305,5 +356,8 @@ public class NeueKontakt {
 	}
 	private boolean isValidTelefon(String telefonnummer){
 		return telefonnummer.matches("^[0-9 +]{7,20}$");
+	}
+	private boolean isValidPlz(String plz){
+		return (plz.length() <= 5 && plz.length() >= 3);
 	}
 }

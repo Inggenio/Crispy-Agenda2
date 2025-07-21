@@ -32,6 +32,9 @@ public class KontaktTableModel extends AbstractTableModel {
 			"Nachname",
 			"Vorname",
 			"Unternehmen",
+			"Adresse",
+			"PLZ",
+			"Stadt",
 			"Email",
 			"Telefon",
 			"Favorit"
@@ -65,10 +68,13 @@ public class KontaktTableModel extends AbstractTableModel {
 			case 0 -> k.getTyp();
 			case 1 -> k.getNachname();
 			case 2 -> k.getVorname();
-			case 3 -> k.getUnternehmen();
-			case 4 -> k.geteMail();
-			case 5 -> k.getTelefon();
-			case 6 -> k.isFavorit() ? "★" : "";
+			case 3 -> k.getFirma();
+			case 4 -> k.getAdresse();
+			case 5 -> k.getPlz();
+			case 6 -> k.getStadt();
+			case 7 -> k.geteMail();
+			case 8 -> k.getTelefon();
+			case 9 -> k.isFavorit() ? "★" : "";
 			default -> "";
 		};
 	}

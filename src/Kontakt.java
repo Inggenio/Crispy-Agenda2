@@ -28,7 +28,10 @@ public class Kontakt {
 	private KontaktTyp typ;
 	private String nachname;
 	private String vorname;
-	private String unternehmen;
+	private String firma;
+	private String adresse;
+	private String plz;
+	private String stadt;
 	private String eMail;
 	private String telefon;
 	private boolean favorit;
@@ -36,20 +39,33 @@ public class Kontakt {
 	public Kontakt() {
 	}
 
-	public Kontakt(KontaktTyp typ, String nachname,String vorname, String unternehmen, String eMail, String telefon, boolean favorit) {
+	public Kontakt(KontaktTyp typ, String nachname, String vorname, String firma, String adresse, String plz, String stadt, String eMail, String telefon, boolean favorit) {
 		this.typ = typ;
-		this.vorname = vorname;
 		this.nachname = nachname;
-		this.unternehmen = unternehmen;
+		this.vorname = vorname;
+		this.firma = firma;
+		this.adresse = adresse;
+		this.plz = plz;
+		this.stadt = stadt;
 		this.eMail = eMail;
 		this.telefon = telefon;
 		this.favorit = favorit;
 	}
 
-	public Kontakt(KontaktTyp typ, String vorname, String nachname, String eMail, String telefon, boolean favorit) {
+	public Kontakt(KontaktTyp typ, String nachname, String vorname, String firma, String eMail, String telefon, boolean favorit) {
 		this.typ = typ;
-		this.vorname = vorname;
 		this.nachname = nachname;
+		this.vorname = vorname;
+		this.firma = firma;
+		this.eMail = eMail;
+		this.telefon = telefon;
+		this.favorit = favorit;
+	}
+
+	public Kontakt(KontaktTyp typ, String nachname,String vorname, String eMail, String telefon, boolean favorit) {
+		this.typ = typ;
+		this.nachname = nachname;
+		this.vorname = vorname;
 		this.eMail = eMail;
 		this.telefon = telefon;
 		this.favorit = favorit;
@@ -79,12 +95,12 @@ public class Kontakt {
 		this.nachname = nachname;
 	}
 
-	public String getUnternehmen() {
-		return unternehmen;
+	public String getFirma() {
+		return firma;
 	}
 
-	public void setUnternehmen(String unternehmen) {
-		this.unternehmen = unternehmen;
+	public void setFirma(String firma) {
+		this.firma = firma;
 	}
 
 	public String geteMail() {
@@ -93,6 +109,30 @@ public class Kontakt {
 
 	public void seteMail(String eMail) {
 		this.eMail = eMail;
+	}
+
+	public String getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
+
+	public String getPlz() {
+		return plz;
+	}
+
+	public void setPlz(String plz) {
+		this.plz = plz;
+	}
+
+	public String getStadt() {
+		return stadt;
+	}
+
+	public void setStadt(String stadt) {
+		this.stadt = stadt;
 	}
 
 	public String getTelefon() {
@@ -121,9 +161,12 @@ public class Kontakt {
 	}
 	public String kontaktToCsv(){
 		return typToString(this.typ)+ "," +
-				getVorname()+ "," +
 				getNachname()+ "," +
-				getUnternehmen()+ "," +
+				getVorname()+ "," +
+				getFirma()+ "," +
+				getAdresse()+ "," +
+				getPlz()+ "," +
+				getStadt()+ "," +
 				geteMail()+ "," +
 				getTelefon()+ "," +
 				isFavorit();
@@ -131,9 +174,8 @@ public class Kontakt {
 
 	@Override
 	public String toString() {
-		//return "|" + typString(this.typ) + "| " + nachname.toUpperCase() + " " + vorname + " // " + eMail + " // " + telefon + " // Favorit" + (isFavorit()? "[*]" : "[ ]");
-		return String.format("%-10s %-12s %-12s %-20s %-35s %-15s %-8s",
-				typToString(this.typ), nachname.toUpperCase(), vorname, unternehmen, eMail, telefon, favorit ? "★" : "");
+		return String.format("%-10s %-12s %-12s %-20s %-20s %-35s %-12s %-12s %-15s %-8s",
+				typToString(this.typ), nachname.toUpperCase(), vorname, firma, adresse, plz, stadt, eMail, telefon, favorit ? "★" : "");
 	}
 	//Archiv
 	public static KontaktTyp typStringToTyp(String typ){
