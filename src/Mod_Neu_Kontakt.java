@@ -355,7 +355,7 @@ public class Mod_Neu_Kontakt {
 				if (name.isEmpty()) warnung += "- Name Feld ist leer\n";
 				if (vorname.isEmpty()) warnung += "- Vorname Feld ist leer\n";
 				if (firma.isEmpty()) warnung += "- Firma Feld ist leer\n";
-				if (adresse.isEmpty()) warnung += "- Adresse Feld ist leer";
+				if (adresse.isEmpty()) warnung += "- Adresse Feld ist leer\n";
 				if (!isValidPlz(plz)) warnung += "- PLZ muss 5 Zahlen lang sein\n";
 				if (stadt.isEmpty()) warnung += "- Adresse Feld ist leer\n";
 				if (telefon.isEmpty()) warnung += "- Telefonnummer Feld ist leer\n";
