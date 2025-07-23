@@ -52,7 +52,7 @@ public class MainGUI {
 
 	public void go() {
 		//Kontakte im Program Aufladen
-		BaseManager.AgendaAufLaden();
+		BaseManager.agendaAufLaden();
 
 		//Color
 		Color colorBuchstaben = Color.ORANGE;
@@ -263,6 +263,7 @@ public class MainGUI {
 		window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		window.setSize(new Dimension(1000, 800));
 		window.setVisible(true);
+
 		//Window Listener um Daten zur Datenbank aktualisieren
 		window.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		window.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -277,29 +278,24 @@ public class MainGUI {
 				);
 
 				if (option == JOptionPane.YES_OPTION) {
-					BaseManager.AgendaAbladen();// Database Speichern
+					BaseManager.agendaAbladen();// Database Speichern
 					System.exit(0); // Exit Program + Speichern
 				} else if (option == JOptionPane.NO_OPTION) {
 					System.exit(0); // Exit Program ohne Speichern
 				}
 			}
 		});
+		//Action Listener für Kontakt Hinzufügen
 		kontaktHinzu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Für Normale KontaktHinzu Klass
-
-				//NeueKontakt neuKontakt = new NeueKontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
-				//neuKontakt.go();
-
-
 				//Für NeuModiKontakt
-				NeuModiKontakt neuKontakt = new NeuModiKontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
+				Mod_Neu_Kontakt neuKontakt = new Mod_Neu_Kontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
 				neuKontakt.go();
-
 
 			}
 		});
+		//Action Listener für Kontakt Modifizieren
 		kontaktModifizieren.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -314,13 +310,11 @@ public class MainGUI {
 				KontaktTableModel model = (KontaktTableModel) kontaktTable.getModel();
 				Kontakt kontakt = model.getKontaktAt(modelRow);
 
-				//ModKontakt modFenster = new ModKontakt(model, kontakt);
-				//modFenster.go();
-
-				NeuModiKontakt modFenster = new NeuModiKontakt(model, kontakt);
+				Mod_Neu_Kontakt modFenster = new Mod_Neu_Kontakt(model, kontakt);
 				modFenster.go();
 			}
 		});
+		//Action Listener für Kontakt Löschen
 		kontaktLoschen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -347,6 +341,7 @@ public class MainGUI {
 				}
 			}
 		});
+		//Action Listener für Filter Knopf
 		filterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

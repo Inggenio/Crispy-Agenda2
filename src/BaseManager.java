@@ -24,6 +24,11 @@
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -69,64 +74,21 @@ public class BaseManager {
 		}
 	}
 	//Add Kontakt String für Formular
-	public static void addKontaktString(String content){
-		String[] daten = content.trim().split(",");
 
-		if (daten.length == 10) {
-			try {
-				KontaktTyp typ = typErkennung(daten[0].trim());
-				String nachname = daten[1].trim();
-				String vorname = daten[2].trim();
-				String firma = daten[3].trim();
-				String adresse = daten[4].trim();
-				String plz = daten[5].trim();
-				String stadt = daten[6].trim();
-				String email = daten[7].trim();
-				String telefon = daten[8].trim();
-				boolean favorit = Boolean.parseBoolean(daten[9].trim());
-
-				Kontakt kontakt = new Kontakt(typ, nachname, vorname, firma, adresse, plz, stadt, email, telefon, favorit);
-				kontakte.add(kontakt);
-				System.out.println("Kontakt hinzugefügt: " + kontakt);
-
-			} catch (Exception e) {
-				System.out.println("Fehler beim Parsen der Kontakt-Daten: " + e.getMessage());
-			}
-		} else {
-			System.out.println("Ungültiges Format: " + content);
-		}
-	}
-
-	public static void readDatabase() {
-		int index = 1;
-		for (Kontakt kontakt : kontakte) {
-			System.out.println(index + ": " + kontakt);
-			index++;
-		}
-	}
-	public static void readFile(String filename){
-		File file = new File(filename);
+	private static void agendaBkp(){
 		try {
-			Scanner scanner = new Scanner(file);
-			while(scanner.hasNext()){
-				String line = scanner.nextLine();
-				System.out.println(line);
-			}
-			scanner.close();
-		}catch (FileNotFoundException e){
-			System.out.println("Datei nicht da");
-		}
-	}
-	public static void deleteFile(String filename){
-		File file = new File(filename);
-		if (file.delete()){
-			System.out.println("Die Datei wurde gelöscht");
-		} else {
-			System.out.println("Der Datei Überlebt");
+			Path source = Path.of(dataBase.getPath());
+			String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+			Path backup = Path.of("BackUps/Agenda_backup_" + timestamp + ".csv");
+			Files.copy(source, backup, StandardCopyOption.REPLACE_EXISTING);
+			System.out.println("Backup erstellt: " + backup.getFileName());
+		} catch (IOException ex) {
+			System.out.println("Backup konnte nicht erstellt werden: " + ex.getMessage());
 		}
 	}
 
-	public static void AgendaAufLaden(){
+	public static void agendaAufLaden(){
+		agendaBkp();
 		try (BufferedReader br = new BufferedReader(new FileReader(dataBase))) {
 			String line;
 			br.readLine();
@@ -162,7 +124,7 @@ public class BaseManager {
 			System.out.println("Database nicht gefunden.");
 		}
 	}
-	public static void AgendaAbladen(){
+	public static void agendaAbladen(){
 		try {
 			try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataBasePfad))) {
 				writer.write("typ,nachname,vorname,firma,adresse,plz,stadt,email,telefon,favorit");
@@ -187,6 +149,35 @@ public class BaseManager {
 		};
 	}
 	//Archivierte Methoden
+	//Add Kontakt von ein String
+	public static void addKontaktString(String content){
+		String[] daten = content.trim().split(",");
+
+		if (daten.length == 10) {
+			try {
+				KontaktTyp typ = typErkennung(daten[0].trim());
+				String nachname = daten[1].trim();
+				String vorname = daten[2].trim();
+				String firma = daten[3].trim();
+				String adresse = daten[4].trim();
+				String plz = daten[5].trim();
+				String stadt = daten[6].trim();
+				String email = daten[7].trim();
+				String telefon = daten[8].trim();
+				boolean favorit = Boolean.parseBoolean(daten[9].trim());
+
+				Kontakt kontakt = new Kontakt(typ, nachname, vorname, firma, adresse, plz, stadt, email, telefon, favorit);
+				kontakte.add(kontakt);
+				System.out.println("Kontakt hinzugefügt: " + kontakt);
+
+			} catch (Exception e) {
+				System.out.println("Fehler beim Parsen der Kontakt-Daten: " + e.getMessage());
+			}
+		} else {
+			System.out.println("Ungültiges Format: " + content);
+		}
+	}
+
 	//Kontakt Speichern
 	public static void kontaktSpeichern() {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(dataBase))) {
@@ -231,13 +222,35 @@ public class BaseManager {
 			System.out.println("Kontakt in Database nicht gefunden.");
 		}
 	}
-	public void kontaktLoeschenNachIndex(int index) {
-		if (index >= 0 && index < kontakte.size()) {
-			Kontakt entfernt = kontakte.remove(index);
-			System.out.println("Kontakt gelöscht: " + entfernt);
-		} else {
-			System.out.println("Ungültiger Index.");
+	//Database Lesen durch Konsole
+	public static void readDatabase() {
+		int index = 1;
+		for (Kontakt kontakt : kontakte) {
+			System.out.println(index + ": " + kontakt);
+			index++;
 		}
 	}
+	public static void readFile(String filename){
+		File file = new File(filename);
+		try {
+			Scanner scanner = new Scanner(file);
+			while(scanner.hasNext()){
+				String line = scanner.nextLine();
+				System.out.println(line);
+			}
+			scanner.close();
+		}catch (FileNotFoundException e){
+			System.out.println("Datei nicht da");
+		}
+	}
+	public static void deleteFile(String filename){
+		File file = new File(filename);
+		if (file.delete()){
+			System.out.println("Die Datei wurde gelöscht");
+		} else {
+			System.out.println("Der Datei Überlebt");
+		}
+	}
+
 
 }

@@ -29,18 +29,18 @@ import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class NeuModiKontakt {
+public class Mod_Neu_Kontakt {
 
 	private KontaktTableModel tableModel; // Referenz an Original-Instanz der Tabelle
 	private Kontakt kontakt;
 	private boolean istModifikation;
 
-	public NeuModiKontakt(KontaktTableModel model, Kontakt kontakt) {
+	public Mod_Neu_Kontakt(KontaktTableModel model, Kontakt kontakt) {
 		this.tableModel = model;
 		this.kontakt = kontakt;
 		this.istModifikation = true;
 	}
-	public NeuModiKontakt(KontaktTableModel model) {
+	public Mod_Neu_Kontakt(KontaktTableModel model) {
 		this.tableModel = model;
 		this.kontakt = new Kontakt(); // leeres Objekt
 		this.istModifikation = false;
@@ -312,7 +312,15 @@ public class NeuModiKontakt {
 		panel.getActionMap().put("submit", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				sendButton.doClick(); // Simula Klick
+				sendButton.doClick();
+			}
+		});
+		// ESC-Taste schließt das Fenster
+		panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("ESCAPE"), "escape");
+		panel.getActionMap().put("escape", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				window.dispose(); // Fenster zu
 			}
 		});
 	}
