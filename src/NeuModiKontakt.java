@@ -29,14 +29,21 @@ import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ModKontakt {
+public class NeuModiKontakt {
 
 	private KontaktTableModel tableModel; // Referenz an Original-Instanz der Tabelle
 	private Kontakt kontakt;
+	private boolean istModifikation;
 
-	public ModKontakt(KontaktTableModel model, Kontakt kontakt) {
+	public NeuModiKontakt(KontaktTableModel model, Kontakt kontakt) {
 		this.tableModel = model;
 		this.kontakt = kontakt;
+		this.istModifikation = true;
+	}
+	public NeuModiKontakt(KontaktTableModel model) {
+		this.tableModel = model;
+		this.kontakt = new Kontakt(); // leeres Objekt
+		this.istModifikation = false;
 	}
 
 	JFrame window = new JFrame("Neue Eintrage");
@@ -47,7 +54,7 @@ public class ModKontakt {
 	JButton sendButton = new JButton("Eintage Bestätigen");
 
 	//Buttons
-
+	//Anrede
 	JComboBox<KontaktTyp> typBox = new JComboBox<>(KontaktTyp.values());
 	JLabel lblTyp = new JLabel("Kontakt Typ");
 
@@ -88,7 +95,6 @@ public class ModKontakt {
 	JCheckBox checkBox = new JCheckBox();
 
 	public void go(){
-
 		//Layout
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(5,5,5,5);
@@ -125,7 +131,6 @@ public class ModKontakt {
 		lblFavorit.setForeground(Color.ORANGE);
 
 		//TypBox
-		typBox.setSelectedItem(kontakt.getTyp());
 
 		checkBox.setOpaque(true);
 		checkBox.setBackground(Color.darkGray);
@@ -136,6 +141,7 @@ public class ModKontakt {
 
 		//Kontakttyp
 		typBox.setBackground(Color.GRAY);
+		typBox.setSelectedIndex(0);
 
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -278,26 +284,37 @@ public class ModKontakt {
 		gbc.gridwidth = 2;
 		panel.add(sendButton, gbc);
 
-		//Felder zum Kontakt
-		typBox.setSelectedItem(kontakt.getTyp());
-		textName.setText(kontakt.getNachname());
-		textVorname.setText(kontakt.getVorname());
-		textFirma.setText(kontakt.getFirma());
-		textAdresse.setText(kontakt.getAdresse());
-		textPlz.setText(kontakt.getPlz());
-		textStadt.setText(kontakt.getStadt());
-		textEmail.setText(kontakt.geteMail());
-		textTelefon.setText(kontakt.getTelefon());
-		checkBox.setSelected(kontakt.isFavorit());
-
 		// Window Definition
 		window.add(panel);
 		window.setSize(new Dimension(800,700));
 		window.setVisible(true);
 		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
+		if(istModifikation){
+			//Felder zum Kontakt
+			typBox.setSelectedItem(kontakt.getTyp());
+			textName.setText(kontakt.getNachname());
+			textVorname.setText(kontakt.getVorname());
+			textFirma.setText(kontakt.getFirma());
+			textAdresse.setText(kontakt.getAdresse());
+			textPlz.setText(kontakt.getPlz());
+			textStadt.setText(kontakt.getStadt());
+			textEmail.setText(kontakt.geteMail());
+			textTelefon.setText(kontakt.getTelefon());
+			checkBox.setSelected(kontakt.isFavorit());
+		}
 		//Send Button Action
 		checker();
+		// ENTER-Taste: Formular absenden
+		panel.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
+				.put(KeyStroke.getKeyStroke("ENTER"), "submit");
+
+		panel.getActionMap().put("submit", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sendButton.doClick(); // Simula Klick
+			}
+		});
 	}
 	private void checker(){
 		ActionListener sendFormular = new ActionListener() {
@@ -362,7 +379,10 @@ public class ModKontakt {
 					kontakt.setTelefon(telefon);
 					kontakt.setFavorit(favorit);
 
-					// Endet Kontakt-Hinzufügen
+					// Endet Kontakt-Hinzufügen/Modifizieren
+					if(!istModifikation){
+						BaseManager.kontakte.add(kontakt);
+					}
 					tableModel.refresh();
 					window.dispose();
 				} else {
@@ -384,4 +404,5 @@ public class ModKontakt {
 	private boolean isValidPlz(String plz){
 		return (plz.length() <= 5 && plz.length() >= 3);
 	}
+
 }

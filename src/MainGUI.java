@@ -287,8 +287,17 @@ public class MainGUI {
 		kontaktHinzu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				NeueKontakt neuKontakt = new NeueKontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
+				//Für Normale KontaktHinzu Klass
+
+				//NeueKontakt neuKontakt = new NeueKontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
+				//neuKontakt.go();
+
+
+				//Für NeuModiKontakt
+				NeuModiKontakt neuKontakt = new NeuModiKontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
 				neuKontakt.go();
+
+
 			}
 		});
 		kontaktModifizieren.addActionListener(new ActionListener() {
@@ -305,7 +314,10 @@ public class MainGUI {
 				KontaktTableModel model = (KontaktTableModel) kontaktTable.getModel();
 				Kontakt kontakt = model.getKontaktAt(modelRow);
 
-				ModKontakt modFenster = new ModKontakt(model, kontakt);
+				//ModKontakt modFenster = new ModKontakt(model, kontakt);
+				//modFenster.go();
+
+				NeuModiKontakt modFenster = new NeuModiKontakt(model, kontakt);
 				modFenster.go();
 			}
 		});
