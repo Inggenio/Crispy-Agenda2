@@ -43,8 +43,7 @@ Built entirely with `Java Swing`, using:
 ## 📁 Structure
 
 - `MainGUI.java`: Main program window and logic
-- `NeuKontakt.java`: GUI for adding a new contact
-- `ModKontakt.java`: GUI for modifying existing contact
+- `Neu_Mod_Kontakt.java`: GUI for adding a new contact and modify a existent
 - `Kontakt.java`: Data class for contact information
 - `KontaktTableModel.java`: Custom `TableModel` to manage and refresh data
 - `BaseManager.java`: Handles data persistence (load/save)
