@@ -29,10 +29,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class BaseManager {
 	public static List<Kontakt> kontakte = new ArrayList<>();
@@ -80,8 +77,24 @@ public class BaseManager {
 			Path source = Path.of(dataBase.getPath());
 			String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
 			Path backup = Path.of("BackUps/Agenda_backup_" + timestamp + ".csv");
+
+			//Backup
 			Files.copy(source, backup, StandardCopyOption.REPLACE_EXISTING);
 			System.out.println("Backup erstellt: " + backup.getFileName());
+
+			File backupsPfad = new File("BackUps");
+			File[] backups = backupsPfad.listFiles((dir, name) -> name.startsWith("Agenda_backup_") && name.endsWith(".csv"));
+			if (backups != null && backups.length>3){
+				Arrays.sort(backups, (f1, f2) -> f2.getName().compareTo(f1.getName()));
+
+				for (int i = 3; i < backups.length; i++) {
+					if (backups[i].delete()) {
+						System.out.println("Alter Backup gelöscht: " + backups[i].getName());
+					} else {
+						System.out.println("Konnte Backup nicht löschen: " + backups[i].getName());
+					}
+				}
+			}
 		} catch (IOException ex) {
 			System.out.println("Backup konnte nicht erstellt werden: " + ex.getMessage());
 		}
