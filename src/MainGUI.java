@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
 import java.util.regex.Pattern;
 
 public class MainGUI {
+	public boolean darkMode = true;
 
 	JFrame window = new JFrame("Kontakt Manager");
 	JPanel panel = new JPanel();
@@ -50,13 +51,53 @@ public class MainGUI {
 	JButton kontaktModifizieren = new JButton("Kontakt Modifizieren");
 	JButton kontaktLoschen = new JButton("Kontakt Löschen");
 
+	JButton toggleThemeButton = new JButton("☾ Dunkel / ☀ Hell");
+
+	public void applyTheme(Component component){
+
+		Color bg = ThemeManager.getBackground();
+		Color fg = ThemeManager.getForeground();
+		Color bs = ThemeManager.getAccent();
+
+		if (component instanceof JPanel || component instanceof JFrame) {
+			component.setBackground(bg);
+		}
+		if (component instanceof JLabel || component instanceof JButton || component instanceof JComboBox) {
+			component.setForeground(bs);
+			component.setBackground(bg);
+		}
+		if (component instanceof JTable) {
+			JTable table = (JTable) component;
+			table.setBackground(ThemeManager.isDarkMode()? fg : bg);
+			table.setForeground(ThemeManager.isDarkMode()? bg: bs);
+			table.getTableHeader().setBackground(bg);
+			table.getTableHeader().setForeground(bs);
+		}
+		if (component instanceof JScrollPane) {
+			component.setBackground(bg);
+		}
+
+		if (component instanceof JScrollPane) {
+			JScrollPane scroll = (JScrollPane) component;
+			scroll.setBackground(bg);
+			scroll.setBorder(BorderFactory.createLineBorder(bg, 20));
+		}
+
+		if (component instanceof Container) {
+			for (Component child : ((Container) component).getComponents()) {
+				applyTheme(child);
+			}
+		}
+
+	}
+
 	public void go() {
 		//Kontakte im Program Aufladen
 		BaseManager.agendaAufLaden();
 
 		//Color
 		Color colorBuchstaben = Color.ORANGE;
-		Color colorBackground = Color.DARK_GRAY;
+		//Color colorBackground = Color.DARK_GRAY;
 		Color colorForeground = Color.LIGHT_GRAY;
 		Color colorForeground2 = Color.ORANGE;
 
@@ -143,49 +184,25 @@ public class MainGUI {
 		});
 
 
-
-		//Tabelle Farben
-		kontaktTable.setBackground(colorForeground);
-		kontaktTable.getTableHeader().setBackground(colorBackground);
-		kontaktTable.getTableHeader().setForeground(colorBuchstaben);
-		kontaktTable.setGridColor(colorBackground);
-
 		// Scroll Pane
 		JScrollPane scrollPane = new JScrollPane(kontaktTable);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setPreferredSize(new Dimension(1000,400));
-		scrollPane.setBorder(BorderFactory.createLineBorder(colorBackground,20));
 
 		//Filter Bereich
 		filterLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		filterLabel.setForeground(colorBuchstaben);
-		filterBox.setBackground(colorBackground);
-		filterBox.setForeground(colorForeground2);
-		filterButton.setBackground(colorBackground);
-		filterButton.setForeground(colorBuchstaben);
-		filterFeld.setBackground(colorForeground);
-		filterWeg.setBackground(colorBackground);
-		filterWeg.setForeground(colorBuchstaben);
-
 
 		//Panel Definition
-		panel.setBackground(colorBackground);
 		panel.setLayout(layout);
 
 		//Button Panel für Hinzufügen Modifizieren und Löschen
-		buttonPanel.setBackground(colorBackground);
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(10,20,10,20));
-		kontaktHinzu.setBackground(colorBackground);
-		kontaktHinzu.setForeground(colorBuchstaben);
-		kontaktModifizieren.setBackground(colorBackground);
-		kontaktModifizieren.setForeground(colorBuchstaben);
-		kontaktLoschen.setBackground(colorBackground);
-		kontaktLoschen.setForeground(colorBuchstaben);
 
 		//Button Panel Config
 		buttonPanel.add(kontaktHinzu);
 		buttonPanel.add(kontaktModifizieren);
 		buttonPanel.add(kontaktLoschen);
+		buttonPanel.add(toggleThemeButton);
 
 		//Layout Config
 		gbc.fill = GridBagConstraints.BOTH;
@@ -231,6 +248,13 @@ public class MainGUI {
 		gbc.weightx = 0.1;
 		panel.add(filterWeg,gbc);
 
+		//Filter Weg
+		gbc.gridx = 4;
+		gbc.gridy = 1;
+		gbc.gridwidth = 1;
+		gbc.weightx = 0.1;
+		panel.add(toggleThemeButton,gbc);
+
 		//Leer Zeile
 		gbc.gridx = 0;
 		gbc.gridy = 2;
@@ -262,6 +286,7 @@ public class MainGUI {
 		window.add(panel);
 		window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		window.setSize(new Dimension(1000, 800));
+		applyTheme(window);
 		window.setVisible(true);
 
 		//Window Listener um Daten zur Datenbank aktualisieren
@@ -290,9 +315,8 @@ public class MainGUI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//Für NeuModiKontakt
-				Mod_Neu_Kontakt neuKontakt = new Mod_Neu_Kontakt(tabelle); // tabelle ist der Instanz der KontaktTabelleModel Klasse
+				Mod_Neu_Kontakt neuKontakt = new Mod_Neu_Kontakt(tabelle, ThemeManager.darkMode); // tabelle ist der Instanz der KontaktTabelleModel Klasse
 				neuKontakt.go();
-
 			}
 		});
 		//Action Listener für Kontakt Modifizieren
@@ -310,7 +334,7 @@ public class MainGUI {
 				KontaktTableModel model = (KontaktTableModel) kontaktTable.getModel();
 				Kontakt kontakt = model.getKontaktAt(modelRow);
 
-				Mod_Neu_Kontakt modFenster = new Mod_Neu_Kontakt(model, kontakt);
+				Mod_Neu_Kontakt modFenster = new Mod_Neu_Kontakt(model, kontakt, ThemeManager.isDarkMode());
 				modFenster.go();
 			}
 		});
@@ -328,7 +352,6 @@ public class MainGUI {
 				int modelRow = kontaktTable.convertRowIndexToModel(selectedRow);
 				KontaktTableModel model = (KontaktTableModel) kontaktTable.getModel();
 				Kontakt kontaktToDelete = model.getKontaktAt(modelRow);
-
 
 				int confirm = JOptionPane.showConfirmDialog(window,
 						"Möchten Sie den Kontakt wirklich löschen?",
@@ -381,6 +404,11 @@ public class MainGUI {
 		filterWeg.addActionListener(e -> {
 			filterFeld.setText("");
 			sorter.setRowFilter(null);
+		});
+		//Action Listener Theme Auswahl
+		toggleThemeButton.addActionListener(e -> {
+			ThemeManager.toggleMode();
+			applyTheme(window);
 		});
 	}
 }

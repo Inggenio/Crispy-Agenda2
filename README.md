@@ -7,26 +7,28 @@ A desktop application built with Java Swing that allows you to manage a contact 
 ## 🚀 Features
 
 - 📝 Add new contacts with fields like:
-  - Name / Vorname
+  - Name(Lastname) / Vorname(First Name)
   - Company (Unternehmen)
+  - Adresse (Address)
+  - PLZ (ZIP Code)
+  - Stadt (City)
   - Email
   - Phone number
   - Contact type (Enum: Kunde, Lieferant, Unbekannt)
   - Favorite status ⭐
 
 - 🔍 Filter contacts by:
-  - Type, Name, Vorname, Company, Email, Phone, Favorites
-
+  - Type, Name, First Name, Company, Address, ZIP Code, City, Email, Phone, Favorites
 - 🛠 Modify existing contacts with data pre-filled in the form
-
 - 🗑 Delete selected contact directly with **Delete** key
-
+- Dark mode toggle 🌙
 - 🎹 Keyboard Shortcuts:
   - `Entf` (Delete) → Delete selected contact
   - `Enter` → Apply filter
   - `Esc` → Clear filter
 
 - 💾 Confirm save on exit, with prompt to store changes to the database
+- 💾 Back-Up function
 
 ---
 
@@ -47,13 +49,16 @@ Built entirely with `Java Swing`, using:
 - `Kontakt.java`: Data class for contact information
 - `KontaktTableModel.java`: Custom `TableModel` to manage and refresh data
 - `BaseManager.java`: Handles data persistence (load/save)
+- `ThemeManager.java`: Handles Light/Dark Theme
+- `MusterKontakte.java`: Random Contact Generator
 
 ---
 
-## 🧪 Validation
+## 🧪 Data Validation
 
 - Input validation for:
   - Non-empty critical fields
+  - Comma avoiding in Fields
   - Email format
   - Phone number format (digits, optional `+`, spaces)
 
@@ -72,7 +77,8 @@ Built entirely with `Java Swing`, using:
 - Persistent database using SQLite or file-based storage
 - Sortable table columns
 - Better error messages and form UX
-- Dark mode toggle 🌙
+- Language support (English, Spanish)
+
 
 ---
 

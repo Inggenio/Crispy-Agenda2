@@ -29,21 +29,49 @@ import java.awt.event.ActionListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Mod_Neu_Kontakt {
+public class Mod_Neu_Kontakt extends MainGUI{
 
 	private KontaktTableModel tableModel; // Referenz an Original-Instanz der Tabelle
 	private Kontakt kontakt;
 	private boolean istModifikation;
 
-	public Mod_Neu_Kontakt(KontaktTableModel model, Kontakt kontakt) {
+	public Mod_Neu_Kontakt(KontaktTableModel model, Kontakt kontakt, boolean darkMode) {
 		this.tableModel = model;
 		this.kontakt = kontakt;
 		this.istModifikation = true;
+		this.darkMode = darkMode;
 	}
-	public Mod_Neu_Kontakt(KontaktTableModel model) {
+	public Mod_Neu_Kontakt(KontaktTableModel model, boolean darkMode) {
 		this.tableModel = model;
 		this.kontakt = new Kontakt(); // leeres Objekt
 		this.istModifikation = false;
+		this.darkMode = darkMode;
+	}
+
+	public void applyTheme(Component component){
+
+		Color bg = ThemeManager.getBackground();
+		Color fg = ThemeManager.getForeground();
+		Color bs = ThemeManager.getAccent();
+
+		if (component instanceof JPanel || component instanceof JFrame) {
+			component.setBackground(bg);
+		}
+		if (component instanceof JLabel || component instanceof JComboBox) {
+			component.setForeground(bs);
+			component.setBackground(fg);
+		}
+		if(component instanceof JButton ){
+			component.setForeground(bs);
+			component.setBackground(bg);
+		}
+
+		if (component instanceof Container) {
+			for (Component child : ((Container) component).getComponents()) {
+				applyTheme(child);
+			}
+		}
+
 	}
 
 	JFrame window = new JFrame("Neue Eintrage");
@@ -53,8 +81,7 @@ public class Mod_Neu_Kontakt {
 
 	JButton sendButton = new JButton("Eintage Bestätigen");
 
-	//Buttons
-	//Anrede
+	//Knöpfe und Labels
 	JComboBox<KontaktTyp> typBox = new JComboBox<>(KontaktTyp.values());
 	JLabel lblTyp = new JLabel("Kontakt Typ");
 
@@ -109,38 +136,16 @@ public class Mod_Neu_Kontakt {
 
 		//Buttons und Felder
 		//Label Alignment
-		lblTyp.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblVorname.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblFirma.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblAdresse.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPlz.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblStadt.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblEmail.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblTelefon.setHorizontalAlignment(SwingConstants.RIGHT);
-
-		lblTyp.setForeground(Color.ORANGE);
-		lblName.setForeground(Color.ORANGE);
-		lblVorname.setForeground(Color.ORANGE);
-		lblFirma.setForeground(Color.ORANGE);
-		lblAdresse.setForeground(Color.ORANGE);
-		lblPlz.setForeground(Color.ORANGE);
-		lblStadt.setForeground(Color.ORANGE);
-		lblEmail.setForeground(Color.ORANGE);
-		lblTelefon.setForeground(Color.ORANGE);
-		lblFavorit.setForeground(Color.ORANGE);
+		JLabel[] labels = {
+				lblTyp, lblName, lblVorname, lblFirma, lblAdresse,
+				lblPlz, lblStadt, lblEmail, lblTelefon
+		};
+		for (JLabel label : labels) {
+			label.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
 
 		//TypBox
-
 		checkBox.setOpaque(true);
-		checkBox.setBackground(Color.darkGray);
-		checkBox.setForeground(Color.darkGray);
-
-		sendButton.setForeground(Color.orange);
-		sendButton.setBackground(Color.DARK_GRAY);
-
-		//Kontakttyp
-		typBox.setBackground(Color.GRAY);
 		typBox.setSelectedIndex(0);
 
 		gbc.gridx = 0;
@@ -271,7 +276,6 @@ public class Mod_Neu_Kontakt {
 		panel.add(lblFavorit,gbc);
 
 		//Checkbox
-		checkBox.setBackground(Color.LIGHT_GRAY);
 		checkBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		gbc.gridx = 1;
 		gbc.gridy = 8;
@@ -288,6 +292,7 @@ public class Mod_Neu_Kontakt {
 		window.add(panel);
 		window.setSize(new Dimension(800,700));
 		window.setVisible(true);
+		applyTheme(window);
 		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		if(istModifikation){
@@ -309,6 +314,7 @@ public class Mod_Neu_Kontakt {
 		panel.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT)
 				.put(KeyStroke.getKeyStroke("ENTER"), "submit");
 
+		//Enter für Formular
 		panel.getActionMap().put("submit", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -323,6 +329,7 @@ public class Mod_Neu_Kontakt {
 				window.dispose(); // Fenster zu
 			}
 		});
+
 	}
 	private void checker(){
 		ActionListener sendFormular = new ActionListener() {

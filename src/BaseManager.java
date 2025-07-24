@@ -133,9 +133,9 @@ public class BaseManager {
 					System.out.println("Ungültige Zeile (" + index + ") " + line);
 				}
 			}
-			System.out.println("Ingesamt geladene Kontakte: " + kontakte.size());
+			System.out.println("Datenbank Aufgeladen. Ingesamt geladene Kontakte: " + kontakte.size());
 		} catch (IOException e) {
-			System.out.println("Database nicht gefunden.");
+			System.out.println("Die Database Datei wurde nicht gefunden.");
 		}
 	}
 	public static void agendaAbladen(){
@@ -147,7 +147,7 @@ public class BaseManager {
 					writer.write(kontakt.kontaktToCsv());
 					writer.write(System.lineSeparator());
 				}
-				System.out.println("Kontakte erfolgreich in CSV-Datei gespeichert.");
+				System.out.println("Datenbank erfolgreich in CSV-Datei abgeladen.");
 			}
 		} catch (IOException e) {
 			System.out.println("Fehler beim Schreiben der Datenbank: " + e.getMessage());
