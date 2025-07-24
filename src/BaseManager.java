@@ -61,6 +61,7 @@ public class BaseManager {
 			System.out.println("Datei existiert bereits.");
 		}
 	}
+
 	public static void dataBaseStruktur(){
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(dataBasePfad))) {
 			writer.write("Typ,Nachname,Vorname,Firma,Adresse,PLZ,Stadt,Email,Telefon,Favorit");

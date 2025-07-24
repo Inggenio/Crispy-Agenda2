@@ -6,12 +6,10 @@ KUNDE,Weber,Laura,FinSecure,Waldstr. 13,47773,Berlin,laura.weber@example.com,+49
 UNBEKANNT,Wagner,Max,FinSecure,Rosenweg 6,71361,Hamburg,max.wagner@example.com,+49 417037838,true
 UNBEKANNT,Becker,Laura,BuildPro,Lindenweg 14,34332,Dortmund,laura.becker@example.com,+49 763597150,true
 LIEFERANT,Schmidt,Lena,TransLog,Tulpenweg 5,43635,Stuttgart,lena.schmidt@example.com,+49 436748894,false
-KUNDE,Meyer,Lukas,EcoSystems,Bahnhofstr. 7,21192,Dortmund,lukas.meyer@example.com,+49 603099344,false
 LIEFERANT,Schmidt,Paul,MediCorp,Schlossallee 18,40511,Berlin,paul.schmidt@example.com,+49 633275705,false
 UNBEKANNT,Müller,Anna,TransLog,Neubauweg 33,52839,Berlin,anna.müller@example.com,+49 679413053,true
 UNBEKANNT,Fischer,Paul,BuildPro,Waldstr. 13,50620,Hamburg,paul.fischer@example.com,+49 691342671,false
 LIEFERANT,Wagner,Lukas,BuildPro,Waldstr. 13,52241,Frankfurt,lukas.wagner@example.com,+49 757947470,true
-KUNDE,Schmidt,Mia,EcoSystems,Eichenweg 9,36190,Stuttgart,mia.schmidt@example.com,+49 703064369,false
 LIEFERANT,Müller,Finn,AlphaTech,Waldstr. 13,49934,Frankfurt,finn.müller@example.com,+49 953664362,false
 LIEFERANT,Koch,Max,EcoSystems,Rosenweg 6,21266,Hamburg,max.koch@example.com,+49 928076428,true
 KUNDE,Fischer,Max,AlphaTech,Eichenweg10,37739,Stuttgart,max.fischer@example.com,+49 913295014,false
@@ -20,10 +18,8 @@ UNBEKANNT,Fischer,Lukas,FinSecure,Wiesenweg 2,92318,München,lukas.fischer@examp
 UNBEKANNT,Müller,Max,MediCorp,Goethestr. 8,55005,Hamburg,max.müller@example.com,+49 572903980,true
 KUNDE,Schmidt,Paul,AlphaTech,Hauptstr. 12,75303,Dortmund,paul.schmidt@example.com,+49 899865163,false
 LIEFERANT,Schmidt,Paul,TransLog,Ringstr. 29,44895,Frankfurt,paul.schmidt@example.com,+49 941036084,true
-KUNDE,Hoffmann,Paul,BuildPro,Eichenweg 12,76166,Dortmund,paul.hoffmann@example.com,+49 542067171,false
 UNBEKANNT,Becker,Laura,FinSecure,Bergweg 12,49840,Dortmund,laura.becker@example.com,+49 764588173,false
-LIEFERANT,Müller,Ben,BuildPro,Berliner Allee 22,47651,Stuttgart,ben.müller@example.com,+49 803437513,false
-KUNDE,Koch,Mia,FinSecure,Goethestr. 8,48100,Leipzig,mia.koch@example.com,+49 302238532,true
+KUNDE,Koch,Mia,FinSecure,,48100,Leipzig,mia.koch@example.com,+49 302238532,true
 UNBEKANNT,Fischer,Lena,AlphaTech,Postweg 10,43194,München,lena.fischer@example.com,+49 890506404,true
 KUNDE,Schmidt,Paul,TransLog,Berliner Allee 22,91127,Stuttgart,paul.schmidt@example.com,+49 303234773,false
 LIEFERANT,Müller,Anna,AlphaTech,Lindenstr. 17,71436,Berlin,anna.müller@example.com,+49 934976751,true
@@ -47,7 +43,6 @@ KUNDE,Müller,Max,Foodies,Rosenweg 6,28442,Frankfurt,max.müller@example.com,+49
 KUNDE,Meyer,Mia,TransLog,Gartenweg 3,71590,Hamburg,mia.meyer@example.com,+49 755295772,true
 LIEFERANT,Becker,Lukas,AlphaTech,Eichenweg 9,96300,München,lukas.becker@example.com,+49 384342205,true
 LIEFERANT,Hoffmann,Mia,EcoSystems,Mozartallee 3,59158,Hamburg,mia.hoffmann@example.com,+49 565501712,true
-UNBEKANNT,Fischer,Max,TransLog,Dorfstr. 1,56751,Leipzig,max.fischer@example.com,+49 329128930,false
 KUNDE,Schneider,Max,TransLog,Am Markt 21,75080,Stuttgart,max.schneider@example.com,+49 589325605,false
 KUNDE,Schmidt,Laura,EduWorld,Eichenweg 9,26645,Hamburg,laura.schmidt@example.com,+49 563116066,false
 LIEFERANT,Schmidt,Paul,Foodies,Eichenweg 9,15767,Düsseldorf,paul.schmidt@example.com,+49 523280772,true
@@ -98,3 +93,4 @@ KUNDE,Hoffmann,Ben,MediCorp,Dorfstr. 1,92029,Frankfurt,ben.hoffmann@example.com,
 LIEFERANT,Luduenia,Eber,ComediaEber,San Martin 732, 5463, Buenos Aires,eber@ludueña.com,+54 11231 ,true
 UNBEKANNT,Ludueña,Eber,EberComedia,La Pampa 132,4565,Buenos Aires,eber@luduenia.com,456456454,true
 UNBEKANNT,Kent,Clark,Daily Bugel,Central Park 11,88894,New York,superman@db.com,+55 123 45655,false
+KUNDE,Huschka,Chris,IHK,Straße,86000,Augsburg,chuschka@gmail.com,123,false

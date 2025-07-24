@@ -350,6 +350,21 @@ public class Mod_Neu_Kontakt {
 					JOptionPane.showMessageDialog(window, "Bitte geben Sie mindestens Name, Vorname oder Unternehmen ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+
+				//Validierung: Komma-Vermeidung in den Felden
+				if (noKomma(name) ||
+						noKomma(vorname) ||
+						noKomma(firma) ||
+						noKomma(adresse) ||
+						noKomma(plz) ||
+						noKomma(stadt) ||
+						noKomma(email) ||
+						noKomma(telefon)
+				) {
+					JOptionPane.showMessageDialog(window, "Die Verwendung von Kommas(,) in den Felden ist nicht erlaubt", "Komma Fehler", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
 				//Warnings:
 				String warnung = "";
 				if (name.isEmpty()) warnung += "- Name Feld ist leer\n";
@@ -411,6 +426,9 @@ public class Mod_Neu_Kontakt {
 	}
 	private boolean isValidPlz(String plz){
 		return (plz.length() <= 5 && plz.length() >= 3);
+	}
+	private boolean noKomma(String feld){
+		return feld.contains(",");
 	}
 
 }
